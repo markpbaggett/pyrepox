@@ -18,11 +18,11 @@ class Aggregator:
                 }
         r = requests.post(url, data=json.dumps(data), auth=(username, password), headers=headers)
         if r.status_code == 201:
-            print("Successfully created aggregator.")
+            return "Successfully created aggregator."
         elif r.status_code == 409:
-            print("Could not create aggregator. It already exists.")
+            return "Could not create aggregator. It already exists."
         else:
-            print("There was a problem creating your aggregator.")
+            return "There was a problem creating your aggregator."
 
 
 class Provider:
