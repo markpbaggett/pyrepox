@@ -40,6 +40,15 @@ class Aggregator:
         else:
             return "ERROR {}: Could not update {}.".format(r.status_code, self.name)
 
+    def delete(self, username, password, url):
+        r = requests.delete("{}{}".format(url, self.identifier), auth=(username, password))
+        if r.status_code == 200:
+            return "Sucessfully deleted aggregator {}.".format(self.name)
+        elif r.status_code == 404:
+            return "ERROR {}: Aggregator {} could not be deleted because it does not exist.".format(r.status_code,
+                                                                                                    self.name)
+        else:
+            return "ERROR {}: Could not delete aggregator {}.".format(r.status_code, self.name)
 
 
 class Provider:
