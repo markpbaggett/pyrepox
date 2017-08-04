@@ -34,7 +34,7 @@ class Aggregator:
         if r.status_code == 200:
             return "Successfully updated aggegator {}.".format(self.name)
         elif r.status_code == 400:
-            return "ERROR {}: Could not update {}.  The arguments were invalid".format(r.status_code, self.name)
+            return "ERROR {}: Could not update {}.  The arguments were invalid.".format(r.status_code, self.name)
         elif r.status_code == 404:
             return "ERROR {}: Could not update {}.  The aggregator does not exist.".format(r.status_code, self.name)
         else:
@@ -52,13 +52,15 @@ class Aggregator:
 
 
 class Provider:
-    def __init__(self):
-        self.identifier = ""
-        self.name = ""
-        self.country = ""
-        self.country_code = ""
-        self.description = ""
-        self.name_code = ""
-        self.home_page = ""
-        self.provider_type = ""
-        self.email = ""
+    def __init__(self, identifier, parent, name, name_code, country=None, country_code=None, description=None,
+                 home_page=None, provider_type=None, email=None):
+        self.identifier = identifier
+        self.aggregator = parent
+        self.name = name
+        self.name_code = name_code
+        self.country = country
+        self.country_code = country_code
+        self.description = description
+        self.home_page = home_page
+        self.provider_type = provider_type
+        self.email = email
