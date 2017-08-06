@@ -30,7 +30,7 @@ class Aggregator:
         if data is None:
             return "Could not update aggregator {}. The request body was empty.".format(self.name)
         r = requests.put("{}/{}".format(url, self.identifier), data=json.dumps(data), auth=(username, password),
-                       headers=self.headers)
+                         headers=self.headers)
         if r.status_code == 200:
             return "Successfully updated aggegator {}.".format(self.name)
         elif r.status_code == 400:
@@ -52,8 +52,8 @@ class Aggregator:
 
 
 class Provider:
-    def __init__(self, identifier, parent, name, name_code, country=None, country_code=None, description=None,
-                 home_page=None, provider_type=None, email=None, headers=None):
+    def __init__(self, identifier, parent, name, name_code, country="United States", country_code=None, description=None,
+                 home_page=None, provider_type="LIBRARY", email=None, headers=None):
         self.identifier = identifier
         self.aggregator = parent
         self.name = name
@@ -68,6 +68,9 @@ class Provider:
             self.headers = {'content-type': 'application/json'}
         else:
             self.headers = headers
+
+    def __str__(self):
+        return self.name
 
     def create(self, username, password, url):
         data = {"id": self.identifier, "name": self.name, "nameCode": self.name_code}
@@ -85,7 +88,7 @@ class Provider:
             data["providerType"] = self.provider_type
         if self.email is not None:
             data["email"] = self.email
-        r = requests.post("{}/{}".format(url, self.aggregator), data=json.dump(data), auth=(username, password),
+        r = requests.post("{}{}".format(url, self.aggregator), data=json.dumps(data), auth=(username, password),
                           headers=self.headers)
         if r.status_code == 201:
             return "Successfully created provider {} for aggregator {}.".format(self.name, self.aggregator)
@@ -104,3 +107,6 @@ class Provider:
         else:
             return "ERROR {}: Could not create {} provider for {} aggregator." \
                 .format(r.status_code, self.name, self.aggregator)
+
+    def update(self):
+        data = {}
