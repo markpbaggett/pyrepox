@@ -27,8 +27,7 @@ class Aggregator:
         return self.name
 
     def create(self, username, password, url):
-        data = {"id": self.identifier, "name": self.name, "nameCode": self.name_code}
-        print("{}aggregators".format(url))
+        data = {"id": self.identifier, "name": self.name, "nameCode": self.name_code, "homepage": self.home_page}
         r = requests.post("{}aggregators".format(url), data=json.dumps(data), auth=(username, password),
                           headers=self.headers)
         if r.status_code == 201:
