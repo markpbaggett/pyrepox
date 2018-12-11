@@ -57,6 +57,15 @@ class Repox:
     def delete_provider(self):
         return
 
+    def get_list_of_sets_from_provider(self, provider_id, verbose=False):
+        if verbose is True:
+            return json.loads(requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+                                       auth=(self.username, self.password)).content)
+        else:
+            data_sets = json.loads(requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+                                       auth=(self.username, self.password)).content)
+            return [data_set["dataSource"]["id"] for data_set in data_sets]
+
 
 if __name__ == "__main__":
     settings = yaml.load(open("settings.yml", "r"))
@@ -64,4 +73,5 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_specific_aggregator("TNDPLAr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_aggregator_options())
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_providers("TNDPLAr0"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_sets_from_provider("utcr0"))
