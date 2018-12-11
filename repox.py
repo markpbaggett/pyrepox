@@ -44,8 +44,9 @@ class Repox:
                                        auth=(self.username, self.password)).content)
             return [provider["id"] for provider in providers]
 
-    def get_provider(self):
-        return
+    def get_provider(self, provider_id):
+        return json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
+                                       auth=(self.username, self.password)).content)
 
     def create_provider(self):
         return
@@ -62,4 +63,5 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).list_all_aggregators(False))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_specific_aggregator("TNDPLAr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_aggregator_options())
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_providers("TNDPLAr0", verbose=True))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_providers("TNDPLAr0"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
