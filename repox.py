@@ -1,5 +1,6 @@
 import json
 import requests
+import xmltodict
 import yaml # Adding temporarily for testing only
 
 
@@ -78,6 +79,12 @@ class Repox:
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                                        auth=(self.username, self.password)).content)["result"]
 
+    def get_statistics(self):
+        data = json.loads(requests.get(f"{self.swagger_endpoint}/statistics",
+                                       auth=(self.username, self.password)).content)
+        return json.dumps(xmltodict.parse(data["result"]))
+
+
 
 if __name__ == "__main__":
     settings = yaml.load(open("settings.yml", "r"))
@@ -87,4 +94,5 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_providers("TNDPLAr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_sets_from_provider("utcr0"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).count_records_from_dataset("p16877coll2"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).count_records_from_dataset("p16877coll2"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_statistics())
