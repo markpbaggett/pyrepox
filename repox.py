@@ -70,6 +70,10 @@ class Repox:
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
                                        auth=(self.username, self.password)).content)
 
+    def get_last_ingest_date_of_set(self, data_set_id):
+        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
+                                       auth=(self.username, self.password)).content)["result"]
+
 
 if __name__ == "__main__":
     settings = yaml.load(open("settings.yml", "r"))
@@ -79,4 +83,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_providers("TNDPLAr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_sets_from_provider("utcr0"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_dataset_details("p16877coll2"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("p16877coll2"))
