@@ -84,6 +84,21 @@ class Repox:
                                        auth=(self.username, self.password)).content)
         return json.dumps(xmltodict.parse(data["result"]))
 
+    def get_options_for_mappings(self):
+        return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/options",
+                                       auth=(self.username, self.password)).content)
+
+    def get_options_for_records(self):
+        return json.loads(requests.get(f"{self.swagger_endpoint}/records/options",
+                                       auth=(self.username, self.password)).content)
+
+    def get_record(self, record_id):
+        return json.loads(requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}",
+                                       auth=(self.username, self.password)).content)
+
+    def get_mapping_details(self, mapping_id):
+        return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
+                                       auth=(self.username, self.password)).content)
 
 
 if __name__ == "__main__":
@@ -95,4 +110,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_sets_from_provider("utcr0"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).count_records_from_dataset("p16877coll2"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_statistics())
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping("UTKMODSrepaired"))
