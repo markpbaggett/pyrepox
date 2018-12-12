@@ -11,6 +11,8 @@ class Repox:
         self.password = password
 
     def list_all_aggregators(self, verbose: bool=True) -> list:
+        """Returns all aggregators. If verbose is true, returns a list of dicts with metadata about aggregator.
+        If verbose is false, returns a list of aggregator ids as strings."""
         if verbose is True:
             return json.loads(requests.get(f"{self.swagger_endpoint}/aggregators",
                                        auth=(self.username, self.password)).content)
@@ -20,6 +22,7 @@ class Repox:
             return [aggregator["id"] for aggregator in aggregators]
 
     def get_specific_aggregator(self, aggregator_id: str) -> dict:
+        """Takes an aggregator id and returns metadata about the aggregator as a dict."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
                                        auth=(self.username, self.password)).content)
 
@@ -36,7 +39,9 @@ class Repox:
     def delete_an_aggregator(self):
         return
 
-    def get_list_of_providers(self, aggregator_id: str, verbose: bool=False) -> any:
+    def get_list_of_providers(self, aggregator_id: str, verbose: bool=False) -> list:
+        """Takes an aggregator id and returns the providers that belong to that aggregator as a list. If verbose is
+        true, metadata is included about each provider. If it is false, the list consists of provider ids as strings."""
         if verbose is True:
             return json.loads(requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
                                        auth=(self.username, self.password)).content)
@@ -45,7 +50,8 @@ class Repox:
                                        auth=(self.username, self.password)).content)
             return [provider["id"] for provider in providers]
 
-    def get_provider(self, provider_id):
+    def get_provider(self, provider_id: str) -> dict:
+        """Takes a provider id and returns a dict of metadata about the provider."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
                                        auth=(self.username, self.password)).content)
 
@@ -58,7 +64,10 @@ class Repox:
     def delete_provider(self):
         return
 
-    def get_list_of_sets_from_provider(self, provider_id: str, verbose: bool=False) -> any:
+    def get_list_of_sets_from_provider(self, provider_id: str, verbose: bool=False) -> list:
+        """Takes a provider id and returns the data sets assoicated with it. If verbose is true, metadata about each
+        set is included and the list consists of dicts.  If verbose is false, the list consists of dataset ids as
+        strings."""
         if verbose is True:
             return json.loads(requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
                                        auth=(self.username, self.password)).content)
@@ -68,18 +77,22 @@ class Repox:
             return [data_set["dataSource"]["id"] for data_set in data_sets]
 
     def get_dataset_details(self, data_set_id: str) -> dict:
+        """Returns metadata about a dataset as a dict."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
                                        auth=(self.username, self.password)).content)
 
     def get_last_ingest_date_of_set(self, data_set_id: str) -> str:
+        """Returns the last ingestion date of a dataset as a string."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
                                        auth=(self.username, self.password)).content)["result"]
 
     def count_records_from_dataset(self, data_set_id: str) -> str:
+        """Returns the total number of records from a dataset as a string."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                                        auth=(self.username, self.password)).content)["result"]
 
     def get_statistics(self) -> dict:
+        """Returns statistics about the entire Repox instance as a dict."""
         data = json.loads(requests.get(f"{self.swagger_endpoint}/statistics",
                                        auth=(self.username, self.password)).content)
         return json.dumps(xmltodict.parse(data["result"]))
@@ -97,6 +110,7 @@ class Repox:
                                        auth=(self.username, self.password)).content)
 
     def get_mapping_details(self, mapping_id) -> dict:
+        """Returns metadata about a mapping as a dict."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
                                        auth=(self.username, self.password)).content)
 
