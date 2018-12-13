@@ -113,7 +113,45 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}", headers=self.headers,
                              auth=(self.username, self.password), data=json.dumps(metadata)).status_code
 
-    def update_provider(self):
+    def update_provider(self, provider_id: str, name: str="", country: str="", country_code: str="",
+                        description: str="", name_code: str="", homepage: str="", provider_type: str="",
+                        email: str="") -> int:
+        """Takes a provider_id as a string and optionally any metadata value for any other field you want to change.
+        If a field value is not provided, the current field value is passed to the API along with new fields.
+
+        Returns the HTTP status code of the response.
+        """
+        old_data = json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
+                                           auth=(self.username, self.password)).content)
+        if name == "":
+            name = old_data["name"]
+        if country == "":
+            country = old_data["country"]
+        if country_code == "":
+            country_code = old_data["countryCode"]
+        if description == "":
+            description = old_data["description"]
+        if name_code == "":
+            name_code = old_data["nameCode"]
+        if homepage == "":
+            homepage = old_data["homepage"]
+        if provider_type == "":
+            provider_type = old_data["providerType"]
+        if email == "":
+            email = old_data["email"]
+        metadata = {"id": provider_id,
+                    "name": name,
+                    "country": country,
+                    "countryCode": country_code,
+                    "description": description,
+                    "nameCode": name_code,
+                    "homepage": homepage,
+                    "providerType": provider_type,
+                    "email": email}
+        return requests.put(f"{self.swagger_endpoint}/providers/{provider_id}", auth=(self.username, self.password),
+                            headers=self.headers, data=json.dumps(metadata)).status_code
+
+    def assign_provider_to_new_aggregator(self):
         return
 
     def delete_provider(self):
@@ -196,13 +234,14 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).delete_aggregator("test"))
-    x = {"id": "abcd",
-         "name": "Test",
-         "country": "United States",
-         "countryCode": "",
-         "description": "a",
-         "nameCode": "abcd",
-         "homepage": "google.com",
-         "providerType": "LIBRARY",
-         "email": "a"}
-    print(Repox(settings["url"], settings["username"], settings["password"]).create_provider("dltn", x))
+    # x = {"id": "abcd",
+    #      "name": "Test",
+    #      "country": "United States",
+    #      "countryCode": "",
+    #      "description": "a",
+    #      "nameCode": "abcd",
+    #      "homepage": "google.com",
+    #      "providerType": "LIBRARY",
+    #      "email": "a"}
+    # print(Repox(settings["url"], settings["username"], settings["password"]).create_provider("dltn", x))
+    print(Repox(settings["url"], settings["username"], settings["password"]).update_provider("abcd", email="mark@utk.edu"))
