@@ -163,8 +163,13 @@ class Repox:
                             auth=(self.username, self.password), data=json.dumps(metadata),
                             headers=self.headers).status_code
 
-    def delete_provider(self):
-        return
+    def delete_provider(self, provider_id: str) -> int:
+        """Accepts a provider_id and deletes the corresponding provider in Repox.
+
+        Returns the HTTP status code as an int.
+        """
+        return requests.delete(f"{self.swagger_endpoint}/providers/{provider_id}",
+                               auth=(self.username, self.password)).status_code
 
     # Sets
     def get_list_of_sets_from_provider(self, provider_id: str, verbose: bool=False) -> list:
@@ -255,4 +260,5 @@ if __name__ == "__main__":
     # print(Repox(settings["url"], settings["username"], settings["password"]).create_provider("dltn", x))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_provider("abcd", email="mark@utk.edu"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).create_aggregator("mark", "mark"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).assign_provider_to_new_aggregator("abcd", "dltn"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).assign_provider_to_new_aggregator("abcd", "dltn"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).delete_provider("abcd"))
