@@ -73,7 +73,7 @@ class Repox:
     def delete_aggregator(self, aggregator_id: str) -> int:
         """Takes an aggregator id and deletes the corresponding aggregator.  Returns the HTTP status code as an int."""
         return requests.delete(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
-                            auth=(self.username, self.password)).status_code
+                               auth=(self.username, self.password)).status_code
 
     # Providers
     def get_list_of_providers(self, aggregator_id: str, verbose: bool=False) -> list:
@@ -147,9 +147,16 @@ class Repox:
         return json.loads(requests.get(f"{self.swagger_endpoint}/records/options",
                                        auth=(self.username, self.password)).content)
 
-    def get_record(self, record_id):
-        return json.loads(requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}",
-                                       auth=(self.username, self.password)).content)
+    def get_record(self, record_id: str) -> str:
+        """Takes the OAI id from //record/header/identifier as a string and returns the value of //record/metadata
+        as a string if it exists. If there is no metadata xpath, an exception is thrown and an error string is returned.
+        """
+        try:
+            return json.loads(requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}",
+                                           auth=(self.username, self.password)).content)["result"]
+        except json.decoder.JSONDecodeError:
+            return "REPOX Error: This is a generic error and is thrown when Repox can't find a matching metadata.  " \
+                   "This can be caused by an OAI record with the status of deleted."
 
     def get_mapping_details(self, mapping_id) -> dict:
         """Returns metadata about a mapping as a dict."""
@@ -168,7 +175,7 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).count_records_from_dataset("p16877coll2"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("p16877coll2"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_record("urn:dpla.lib.utk.edu.country_mods:6e3b2417-b744-486a-827f-9fbbd81de0a6"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_record("oai:dltn.repox.test.bernhardt:urn:dpla.lib.utk.edu.mtsu_buchanan:oai:cdm15838.contentdm.oclc.org:buchanan/29"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("bcpl"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).delete_aggregator("test"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).delete_aggregator("test"))
