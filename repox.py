@@ -70,8 +70,10 @@ class Repox:
         return requests.put(f"{self.swagger_endpoint}/aggregators/{aggregator_id}", headers=self.headers,
                             auth=(self.username, self.password), data=json.dumps(aggregator_data)).status_code
 
-    def delete_aggregator(self):
-        return
+    def delete_aggregator(self, aggregator_id: str) -> int:
+        """Takes an aggregator id and deletes the corresponding aggregator.  Returns the HTTP status code as an int."""
+        return requests.delete(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
+                            auth=(self.username, self.password)).status_code
 
     # Providers
     def get_list_of_providers(self, aggregator_id: str, verbose: bool=False) -> list:
@@ -102,7 +104,7 @@ class Repox:
 
     # Sets
     def get_list_of_sets_from_provider(self, provider_id: str, verbose: bool=False) -> list:
-        """Takes a provider id and returns the data sets assoicated with it. If verbose is true, metadata about each
+        """Takes a provider id and returns the data sets associated with it. If verbose is true, metadata about each
         set is included and the list consists of dicts.  If verbose is false, the list consists of dataset ids as
         strings.
         """
@@ -167,5 +169,6 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("p16877coll2"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_record("urn:dpla.lib.utk.edu.country_mods:6e3b2417-b744-486a-827f-9fbbd81de0a6"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("bcpl"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).delete_aggregator("test"))
