@@ -151,8 +151,17 @@ class Repox:
         return requests.put(f"{self.swagger_endpoint}/providers/{provider_id}", auth=(self.username, self.password),
                             headers=self.headers, data=json.dumps(metadata)).status_code
 
-    def assign_provider_to_new_aggregator(self):
-        return
+    def assign_provider_to_new_aggregator(self, provider_id: str, aggregator_id: str) -> int:
+        """Takes a provider_id and an aggegator_id and moves the provider with the provider_id to the aggregator with
+        the aggregator_id.
+
+        Returns an HTTP status code as an int.
+        """
+        metadata = json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
+                                           auth=(self.username, self.password)).content)
+        return requests.put(f"{self.swagger_endpoint}/providers/{provider_id}?newAggregatorId={aggregator_id}",
+                            auth=(self.username, self.password), data=json.dumps(metadata),
+                            headers=self.headers).status_code
 
     def delete_provider(self):
         return
@@ -244,4 +253,6 @@ if __name__ == "__main__":
     #      "providerType": "LIBRARY",
     #      "email": "a"}
     # print(Repox(settings["url"], settings["username"], settings["password"]).create_provider("dltn", x))
-    print(Repox(settings["url"], settings["username"], settings["password"]).update_provider("abcd", email="mark@utk.edu"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).update_provider("abcd", email="mark@utk.edu"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).create_aggregator("mark", "mark"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).assign_provider_to_new_aggregator("abcd", "dltn"))
