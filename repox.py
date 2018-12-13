@@ -46,14 +46,31 @@ class Repox:
                            "name": aggregator_name,
                            "nameCode": name_code,
                            "homepage": homepage}
-        return type(requests.post(f"{self.swagger_endpoint}/aggregators",
-                                  auth=(self.username, self.password), headers=self.headers,
-                                  data=json.dumps(aggregator_data)).status_code)
+        return requests.post(f"{self.swagger_endpoint}/aggregators", auth=(self.username, self.password),
+                             headers=self.headers, data=json.dumps(aggregator_data)).status_code
 
-    def update_an_aggregator(self, aggregator_id):
-        return
+    def update_aggregator(self, aggregator_id: str, aggregator_name: str="", name_code: str="", homepage: str="") \
+            -> int:
+        """Requires an aggregator_id.  Accepts an aggregator_name, name_code, or homepage.  If any of these are not
+        present, the current data is passed.
 
-    def delete_an_aggregator(self):
+        Returns an HTTP status code as an int.
+        """
+        old_data = self.get_aggregator(aggregator_id)
+        if aggregator_name == "":
+            aggregator_name = old_data["name"]
+        if name_code == "":
+            name_code = old_data["nameCode"]
+        if homepage == "":
+            homepage == old_data["homepage"]
+        aggregator_data = {"id": aggregator_id,
+                           "name": aggregator_name,
+                           "nameCode": name_code,
+                           "homepage": homepage}
+        return requests.put(f"{self.swagger_endpoint}/aggregators/{aggregator_id}", headers=self.headers,
+                            auth=(self.username, self.password), data=json.dumps(aggregator_data)).status_code
+
+    def delete_aggregator(self):
         return
 
     # Providers
@@ -150,5 +167,5 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("p16877coll2"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_record("urn:dpla.lib.utk.edu.country_mods:6e3b2417-b744-486a-827f-9fbbd81de0a6"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).create_aggregator("test", "test"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("bcpl"))
