@@ -235,6 +235,20 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
                              auth=(self.username, self.password), data=json.dumps(metadata)).status_code
 
+    # This returns a 200 but doesn't seem to work.
+    def export_dataset(self, dataset_id: str) -> int:
+        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/export", headers=self.headers,
+                             auth=(self.username, self.password)).status_code
+
+    def copy_dataset(self, dataset_id: str, new_dataset_id: str) -> int:
+        """Takes a dataset_id for an existing dataset and creates a new dataset in the same provider based on existing
+        metadata and a new_dataset_id.
+
+        Returns an HTTP status code as an int.
+        """
+        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}?newDatasetId={new_dataset_id}",
+                             headers=self.headers, auth=(self.username, self.password)).status_code
+
     # Statistics
     def get_statistics(self) -> dict:
         """Returns statistics about the entire Repox instance as a dict."""
@@ -297,25 +311,27 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).create_aggregator("mark", "mark"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).assign_provider_to_new_aggregator("abcd", "dltn"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).delete_provider("abcd"))
-    x = {
-        "containerType": "DEFAULT",
-        "dataSource":
-            {
-            "exportDir": "/home/vagrant",
-            "metadataFormat": "oai_dc",
-            "marcFormat": "",
-            "recordIdPolicy":
-                {"IdProvided": {}},
-            "isSample": False,
-            "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-            "namespace": "http://purl.org/dc/elements/1.1/",
-            "description": "nashville_test",
-            "id": "nashville_test",
-            "dataSetType": "OAI",
-            "oaiSourceURL": "https://dpla.lib.utk.edu/repox/OAIHandler",
-            "oaiSet": "p15769coll18"
-            },
-        "name": "nashville_test",
-        "nameCode": "nashville_test"
-    }
-    print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
+    # x = {
+    #     "containerType": "DEFAULT",
+    #     "dataSource":
+    #         {
+    #         "exportDir": "/home/vagrant",
+    #         "metadataFormat": "oai_dc",
+    #         "marcFormat": "",
+    #         "recordIdPolicy":
+    #             {"IdProvided": {}},
+    #         "isSample": False,
+    #         "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+    #         "namespace": "http://purl.org/dc/elements/1.1/",
+    #         "description": "nashville_test",
+    #         "id": "nashville_test",
+    #         "dataSetType": "OAI",
+    #         "oaiSourceURL": "https://dpla.lib.utk.edu/repox/OAIHandler",
+    #         "oaiSet": "p15769coll18"
+    #         },
+    #     "name": "nashville_test",
+    #     "nameCode": "nashville_test"
+    # }
+    # print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).copy_dataset("bcpl", "new_bcpl"))
