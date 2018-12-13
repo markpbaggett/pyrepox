@@ -93,8 +93,25 @@ class Repox:
         return json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
                                        auth=(self.username, self.password)).content)
 
-    def create_provider(self):
-        return
+    # Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
+    def create_provider(self, aggregator_id: str, metadata: dict) -> int:
+        """Takes an aggregator id and adds a new provider based on the contents of a metadata dict.
+        A metadata dict looks like this:
+
+        {"id": "abcd123",
+         "name": "Test provider",
+         "country": "United States",
+         "countryCode": "",
+         "description": "What is this",
+         "nameCode": "abcd123",
+         "homepage": "https://google.com",
+         "providerType": "LIBRARY",
+         "email": "mbagget1@utk.edu"}
+
+        Returns an HTTP status code as a string.
+        """
+        return requests.post(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}", headers=self.headers,
+                             auth=(self.username, self.password), data=json.dumps(metadata)).status_code
 
     def update_provider(self):
         return
@@ -175,7 +192,17 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).count_records_from_dataset("p16877coll2"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("p16877coll2"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_record("oai:dltn.repox.test.bernhardt:urn:dpla.lib.utk.edu.mtsu_buchanan:oai:cdm15838.contentdm.oclc.org:buchanan/29"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).get_record("oai:dltn.repox.test.bernhardt:urn:dpla.lib.utk.edu.mtsu_buchanan:oai:cdm15838.contentdm.oclc.org:buchanan/29"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).delete_aggregator("test"))
+    x = {"id": "abcd",
+         "name": "Test",
+         "country": "United States",
+         "countryCode": "",
+         "description": "a",
+         "nameCode": "abcd",
+         "homepage": "google.com",
+         "providerType": "LIBRARY",
+         "email": "a"}
+    print(Repox(settings["url"], settings["username"], settings["password"]).create_provider("dltn", x))
