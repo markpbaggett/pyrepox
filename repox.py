@@ -200,6 +200,41 @@ class Repox:
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                                        auth=(self.username, self.password)).content)["result"]
 
+    # We need to determine what's actually required here and what is not and write something to help with unpacking this.
+    def create_dataset(self, provider_id: str, metadata: dict) -> int:
+        """Takes a provider_id and creates a new dataset in it based on the contents of a metadata dict.
+
+        Example metadata:
+        {
+            "containerType": "DEFAULT",
+            "dataSource":
+                {
+                    "exportDir": "/home/vagrant",
+                    "metadataFormat": "oai_dc",
+                    "marcFormat": "",
+                    "recordIdPolicy":
+                        {
+                            "IdProvided":
+                                {}
+                        },
+                    "isSample": False,
+                    "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+                    "namespace": "http://purl.org/dc/elements/1.1/",
+                    "description": "nashville_test",
+                    "id": "nashville_test",
+                    "dataSetType": "OAI",
+                    "oaiSourceURL": "https://dpla.lib.utk.edu/repox/OAIHandler",
+                    "oaiSet": "p15769coll18"
+            },
+            "name": "nashville_test",
+            "nameCode": "nashville_test"
+        }
+
+        Returns an HTTP status code as an int.
+        """
+        return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
+                             auth=(self.username, self.password), data=json.dumps(metadata)).status_code
+
     # Statistics
     def get_statistics(self) -> dict:
         """Returns statistics about the entire Repox instance as a dict."""
@@ -261,4 +296,26 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_provider("abcd", email="mark@utk.edu"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).create_aggregator("mark", "mark"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).assign_provider_to_new_aggregator("abcd", "dltn"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).delete_provider("abcd"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).delete_provider("abcd"))
+    x = {
+        "containerType": "DEFAULT",
+        "dataSource":
+            {
+            "exportDir": "/home/vagrant",
+            "metadataFormat": "oai_dc",
+            "marcFormat": "",
+            "recordIdPolicy":
+                {"IdProvided": {}},
+            "isSample": False,
+            "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+            "namespace": "http://purl.org/dc/elements/1.1/",
+            "description": "nashville_test",
+            "id": "nashville_test",
+            "dataSetType": "OAI",
+            "oaiSourceURL": "https://dpla.lib.utk.edu/repox/OAIHandler",
+            "oaiSet": "p15769coll18"
+            },
+        "name": "nashville_test",
+        "nameCode": "nashville_test"
+    }
+    print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
