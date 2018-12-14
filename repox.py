@@ -200,7 +200,7 @@ class Repox:
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                                        auth=(self.username, self.password)).content)["result"]
 
-    # We need to determine what's actually required here and what is not and write something to help with unpacking this.
+    # We need to determine what's actually required and what is not and write something to help with unpacking this.
     def create_dataset(self, provider_id: str, metadata: dict) -> int:
         """Takes a provider_id and creates a new dataset in it based on the contents of a metadata dict.
 
@@ -235,7 +235,7 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
                              auth=(self.username, self.password), data=json.dumps(metadata)).status_code
 
-    # This returns a 200 but doesn't seem to work.
+    # This returns a 200 but doesn't seem to work. Could be write permissions?
     def export_dataset(self, dataset_id: str) -> int:
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/export", headers=self.headers,
                              auth=(self.username, self.password)).status_code
@@ -248,6 +248,60 @@ class Repox:
         """
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}?newDatasetId={new_dataset_id}",
                              headers=self.headers, auth=(self.username, self.password)).status_code
+
+    # If this goal is to humanize this, we need to make this as simple as possible for the user.
+    # What does a oai set look like compared to a file set or z3950 set?
+    def update_oai_dataset(self, dataset_id: str, export_dir: str="", metadata_format: str="", description: str="",
+                           is_sample: bool=False, oai_url: str="", set_name: str="", name: str="", name_code: str="") \
+            -> int:
+        """Requires a dataset_id and accepts most metadata elements for an OAI dataset as a str.  If a metadata
+        element is not passed, the value is taken from the previous data.
+
+        Returns an HTTP status code as an int.
+        """
+        old_data = self.get_dataset_details(dataset_id)
+        data_source_data = {"exportDir": export_dir, "description": description, "oaiSourceURL": oai_url,
+                            "isSample": is_sample, "oaiSet": set_name}
+        if metadata_format != "":
+            format_data = self.__metadata_helper(metadata_format)
+            if format_data["result"]["schema"] != "":
+                data_source_data["schema"] = format_data["result"]["schema"]
+                data_source_data["namespace"] = format_data["result"]["namespace"]
+                data_source_data["metadataFormat"] = metadata_format
+        for k, v in data_source_data.items():
+            if v != "":
+                old_data["dataSource"][k] = v
+        if name != "":
+            old_data["name"] = name
+        if name_code != "":
+            old_data["nameCode"] = name_code
+        return requests.put(f"{self.swagger_endpoint}/datasets/{dataset_id}", headers=self.headers,
+                            auth=(self.username, self.password), data=json.dumps(old_data)).status_code
+
+    @staticmethod
+    def __metadata_helper(metadata_format):
+        """Private method that accepts a metadata format and returns a matching namespace and schema if one exists."""
+        formats = {"mods":
+            {
+                "schema": 'http://www.loc.gov/standards/mods/v3/mods-3-5.xsd',
+                "namespace": 'http://www.loc.gov/mods/v3'
+            },
+            "oai_dc":
+                {
+                    "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+                    "namespace": 'http://www.openarchives.org/OAI/2.0/'
+                },
+            "oai_qdc":
+                {
+                    "schema": "http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd",
+                    "namespace": "http://worldcat.org/xmlschemas/qdc-1.0"
+                }
+        }
+        current_format = metadata_format.lower()
+        try:
+            return {"result": formats[current_format]}
+        except KeyError:
+            return {"result": {"schema": "", "namespace": ""}}
 
     # Statistics
     def get_statistics(self) -> dict:
@@ -334,4 +388,5 @@ if __name__ == "__main__":
     # }
     # print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).copy_dataset("bcpl", "new_bcpl"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).get_dataset_details("bcpl"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
