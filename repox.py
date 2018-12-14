@@ -278,6 +278,14 @@ class Repox:
         return requests.put(f"{self.swagger_endpoint}/datasets/{dataset_id}", headers=self.headers,
                             auth=(self.username, self.password), data=json.dumps(old_data)).status_code
 
+    def delete_dataset(self, dataset_id: str) -> int:
+        """Requires a dataset_id as a string and deletes the corresponding dataset.
+
+        Returns an HTTP status code as an int.
+        """
+        return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}",
+                               auth=(self.username, self.password)).status_code
+
     @staticmethod
     def __metadata_helper(metadata_format):
         """Private method that accepts a metadata format and returns a matching namespace and schema if one exists."""
@@ -388,5 +396,5 @@ if __name__ == "__main__":
     # }
     # print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_dataset_details("bcpl"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).delete_dataset("bcpl"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
