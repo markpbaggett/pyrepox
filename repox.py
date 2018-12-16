@@ -338,10 +338,31 @@ class Repox:
             return "REPOX Error: This is a generic error and is thrown when Repox can't find a matching metadata.  " \
                    "This can be caused by an OAI record with the status of deleted."
 
+    # While this returns a 200, it does not seem to do anything.  Post an issue in Repox.
+    def delete_record(self, record_id: str) -> int:
+        """Accepts a record id and deletes the corresponding record.  Returns the HTTP status code as an int."""
+        return requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}&type=delete",
+                            auth=(self.username, self.password)).status_code
+
     def get_mapping_details(self, mapping_id) -> dict:
         """Returns metadata about a mapping as a dict."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
                                        auth=(self.username, self.password)).content)
+
+    def add_mapping(self):
+        """
+        {
+        'id': 'UTKMODSrepaired',
+        'description': 'UTK MODS modified for DLTN MODS',
+        'sourceSchemaId': 'oai_mods',
+        'destinationSchemaId': 'MODS',
+        'stylesheet': 'utkmodstomods.xsl',
+        'sourceSchemaVersion': '3.5',
+        'versionTwo': True}
+
+        :return:
+        """
+        return
 
 
 if __name__ == "__main__":
@@ -396,5 +417,6 @@ if __name__ == "__main__":
     # }
     # print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).delete_dataset("bcpl"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).delete_record("oai:dltn.repox.test.specialcollections_newspapers:oai:repository.middlebury.edu:specialcollections_73099"))
