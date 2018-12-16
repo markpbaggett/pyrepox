@@ -318,6 +318,12 @@ class Repox:
                                        auth=(self.username, self.password)).content)
         return json.dumps(xmltodict.parse(data["result"]))
 
+    # Harvests
+    def get_scheduled_harvests(self, dataset_id: str) -> list:
+        """Requires a dataset_id and returns a list of scheduled harvests as dicts."""
+        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
+                                       auth=(self.username, self.password)).content)
+
     # Mappings
     def get_options_for_mappings(self) -> dict:
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/options",
@@ -424,3 +430,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_scheduled_harvests("bernhardt"))
