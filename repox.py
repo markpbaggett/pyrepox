@@ -342,6 +342,20 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/harvest",
                             auth=(self.username, self.password)).text
 
+    def harvest_set(self, dataset_id: str, is_sample: bool=False) -> int:
+        """Requires a dataset_id as a string and optionally accepts an is_sample parameter as a bool.  By default,
+        is_sample is False.  If is_sample is False, the entire set is harvested. If is_sample is True, only a subset
+        of records are harvested.
+
+        Returns the HTTP status code as an int.
+        """
+        if is_sample is False:
+            harvest_type = "full"
+        else:
+            harvest_type = "sample"
+        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/start?type={harvest_type}",
+                             auth=(self.username, self.password)).status_code
+
     # Mappings
     def get_options_for_mappings(self) -> dict:
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/options",
@@ -448,4 +462,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_running_harvests())
+    print(Repox(settings["url"], settings["username"], settings["password"]).harvest_set("new_bcpl"))
