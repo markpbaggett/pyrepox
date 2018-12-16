@@ -375,6 +375,13 @@ class Repox:
         return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/cancel",
                                auth=(self.username, self.password)).status_code
 
+    def delete_automatic_harvesting_task(self, dataset_id: str, task_id: str) -> int:
+        """Requires the dataset_id of the set and the task_id related to the scheduled task.
+
+        Returns the HTTP status code as an int.
+        """
+        return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules/{task_id}",
+                               auth=(self.username, self.password)).status_code
 
     # Mappings
     def get_options_for_mappings(self) -> dict:
@@ -482,4 +489,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).cancel_running_harvest("nr"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).delete_automatic_harvesting_task("bernhardt", "bernhardt_3"))
