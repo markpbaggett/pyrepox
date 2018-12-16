@@ -325,10 +325,16 @@ class Repox:
                                        auth=(self.username, self.password)).content)
 
     # What does a bad result look like?  Should we really return a dict here?
-    def get_status_of_harvest(self, dataset_id: dict):
+    def get_status_of_harvest(self, dataset_id: str) -> dict:
         """Requires a dataset_id and returns the status of the list havest as a dict."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
                                        auth=(self.username, self.password)).content)
+
+    # This json.loads business everywhere else is ridiculous.  I forgot requests has a json method to handle this.
+    def get_log_of_last_harvest(self, dataset_id: str) -> str:
+        """Requires the dataset_id and returns the log of the last ingest as a string of XML."""
+        return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/log",
+                            auth=(self.username, self.password)).json()["result"]
 
     # Mappings
     def get_options_for_mappings(self) -> dict:
@@ -436,4 +442,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_status_of_harvest("bernhardt"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_log_of_last_harvest("bernhardt"))
