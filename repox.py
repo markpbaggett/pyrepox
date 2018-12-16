@@ -356,6 +356,18 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/start?type={harvest_type}",
                              auth=(self.username, self.password)).status_code
 
+    # Need to figure out what the dict needs to look like. This isn't documented.
+    def schedule_harvest(self, dataset_id: str, metadata: dict, incremental: bool=False) -> int:
+        """Requires a dataset_id, metadata about the harvest as a dict, and optionally whether or not
+        this is an incremental harvest (defaults to False).
+
+        Returns the HTTP status code as an int.
+        """
+        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedule?incremental="
+                             f"{str(incremental).lower()}", headers=self.headers, data=json.dumps(metadata),
+                             auth=(self.username, self.password)).status_code
+
+
     # Mappings
     def get_options_for_mappings(self) -> dict:
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/options",
