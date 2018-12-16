@@ -336,6 +336,12 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/log",
                             auth=(self.username, self.password)).json()["result"]
 
+    # This seems to always return a 405 status code:  method not allowed for the requested resource.
+    def get_list_of_running_harvests(self) -> str:
+        """Returns a message about currently running harvests."""
+        return requests.get(f"{self.swagger_endpoint}/datasets/harvest",
+                            auth=(self.username, self.password)).text
+
     # Mappings
     def get_options_for_mappings(self) -> dict:
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/options",
@@ -442,4 +448,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_log_of_last_harvest("bernhardt"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_running_harvests())
