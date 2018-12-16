@@ -344,6 +344,11 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}&type=delete",
                             auth=(self.username, self.password)).status_code
 
+    # Need to test
+    def add_a_record(self, dataset_id: str, record_id: str, xml_record: str) -> int:
+        return requests.post(f"{self.swagger_endpoint}/records?datasetId={dataset_id}&recordId={record_id}",
+                            auth=(self.username, self.password), headers="application/xml", data=xml_record).status_code
+
     def get_mapping_details(self, mapping_id) -> dict:
         """Returns metadata about a mapping as a dict."""
         return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
@@ -419,4 +424,3 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).delete_record("oai:dltn.repox.test.specialcollections_newspapers:oai:repository.middlebury.edu:specialcollections_73099"))
