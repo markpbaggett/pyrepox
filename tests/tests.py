@@ -28,7 +28,10 @@ def mocked_requests_get_dict(*args, **kwargs):
         def json(self):
             return self.content
 
-    if args[0] is "an_aggregator_id":
+    if len(args) is 0:
+        return MockResponse({'option': [{"description": "test"}]}).json()
+
+    elif args[0] is "an_aggregator_id":
         return MockResponse({'result': 'Aggregator does NOT exist!'}).json()
 
     return MockResponse(None)
@@ -53,6 +56,10 @@ class RepoxTestAggregatorMethods(unittest.TestCase):
         repox_response = self.request.get_aggregator("an_aggregator_id")
         self.assertIs(type(repox_response), dict)
 
+    @patch("repox.repox.Repox.get_aggregator_options", side_effect=mocked_requests_get_dict)
+    def test_get_aggregator_options(self, mock_get):
+        repox_response = self.request.get_aggregator_options()
+        self.assertIs(type(repox_response), dict)
 
 
 if __name__ == '__main__':
