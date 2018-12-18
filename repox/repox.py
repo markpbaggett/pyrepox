@@ -26,12 +26,12 @@ class Repox:
 
     def get_aggregator(self, aggregator_id: str) -> dict:
         """Takes an aggregator id and returns metadata about the aggregator as a dict."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
+                            auth=(self.username, self.password)).json()
 
     def get_aggregator_options(self) -> dict:
-        return json.loads(requests.get(f"{self.swagger_endpoint}/aggregators/options",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/aggregators/options",
+                            auth=(self.username, self.password)).json()
 
     def create_aggregator(self, aggregator_id: str, aggregator_name: str, name_code: str="", homepage: str="") -> int:
         """Requires an identifier and name of aggregator.  Optionally takes a name_code and a homepage.
@@ -81,17 +81,17 @@ class Repox:
         true, metadata is included about each provider. If it is false, the list consists of provider ids as strings.
         """
         if verbose is True:
-            return json.loads(requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
-                                           auth=(self.username, self.password)).content)
+            return requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
+                                auth=(self.username, self.password)).json()
         else:
-            providers = json.loads(requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
-                                                auth=(self.username, self.password)).content)
+            providers = requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
+                                     auth=(self.username, self.password)).json()
             return [provider["id"] for provider in providers]
 
     def get_provider(self, provider_id: str) -> dict:
         """Takes a provider id and returns a dict of metadata about the provider."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
+                            auth=(self.username, self.password)).json()
 
     # Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
     def create_provider(self, aggregator_id: str, metadata: dict) -> int:
@@ -121,8 +121,8 @@ class Repox:
 
         Returns the HTTP status code of the response.
         """
-        old_data = json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
-                                           auth=(self.username, self.password)).content)
+        old_data = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
+                                auth=(self.username, self.password)).json()
         if name == "":
             name = old_data["name"]
         if country == "":
@@ -157,8 +157,8 @@ class Repox:
 
         Returns an HTTP status code as an int.
         """
-        metadata = json.loads(requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
-                                           auth=(self.username, self.password)).content)
+        metadata = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
+                                auth=(self.username, self.password)).json()
         return requests.put(f"{self.swagger_endpoint}/providers/{provider_id}?newAggregatorId={aggregator_id}",
                             auth=(self.username, self.password), data=json.dumps(metadata),
                             headers=self.headers).status_code
@@ -178,27 +178,27 @@ class Repox:
         strings.
         """
         if verbose is True:
-            return json.loads(requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
-                                           auth=(self.username, self.password)).content)
+            return requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+                                auth=(self.username, self.password)).json()
         else:
-            data_sets = json.loads(requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
-                                                auth=(self.username, self.password)).content)
+            data_sets = requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+                                     auth=(self.username, self.password)).json()
             return [data_set["dataSource"]["id"] for data_set in data_sets]
 
     def get_dataset_details(self, data_set_id: str) -> dict:
         """Returns metadata about a dataset as a dict."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
+                            auth=(self.username, self.password)).json()
 
     def get_last_ingest_date_of_set(self, data_set_id: str) -> str:
         """Returns the last ingestion date of a dataset as a string."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
-                                       auth=(self.username, self.password)).content)["result"]
+        return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
+                            auth=(self.username, self.password)).json()["result"]
 
     def count_records_from_dataset(self, data_set_id: str) -> str:
         """Returns the total number of records from a dataset as a string."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
-                                       auth=(self.username, self.password)).content)["result"]
+        return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
+                            auth=(self.username, self.password)).json()["result"]
 
     # We need to determine what's actually required and what is not and write something to help with unpacking this.
     def create_dataset(self, provider_id: str, metadata: dict) -> int:
@@ -314,21 +314,21 @@ class Repox:
     # Statistics
     def get_statistics(self) -> dict:
         """Returns statistics about the entire Repox instance as a dict."""
-        data = json.loads(requests.get(f"{self.swagger_endpoint}/statistics",
-                                       auth=(self.username, self.password)).content)
+        data = requests.get(f"{self.swagger_endpoint}/statistics",
+                            auth=(self.username, self.password)).json()
         return json.dumps(xmltodict.parse(data["result"]))
 
     # Harvests
     def get_scheduled_harvests(self, dataset_id: str) -> list:
         """Requires a dataset_id and returns a list of scheduled harvests as dicts."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
+                            auth=(self.username, self.password)).json()
 
     # What does a bad result look like?  Should we really return a dict here?
     def get_status_of_harvest(self, dataset_id: str) -> dict:
         """Requires a dataset_id and returns the status of the list havest as a dict."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
+                            auth=(self.username, self.password)).json()
 
     # This json.loads business everywhere else is ridiculous.  I forgot requests has a json method to handle this.
     def get_log_of_last_harvest(self, dataset_id: str) -> str:
@@ -385,20 +385,20 @@ class Repox:
 
     # Mappings
     def get_options_for_mappings(self) -> dict:
-        return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/options",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/mappings/options",
+                            auth=(self.username, self.password)).json()
 
     def get_options_for_records(self) -> dict:
-        return json.loads(requests.get(f"{self.swagger_endpoint}/records/options",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/records/options",
+                            auth=(self.username, self.password)).json()
 
     def get_record(self, record_id: str) -> str:
         """Takes the OAI id from //record/header/identifier as a string and returns the value of //record/metadata
         as a string if it exists. If there is no metadata xpath, an exception is thrown and an error string is returned.
         """
         try:
-            return json.loads(requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}",
-                                           auth=(self.username, self.password)).content)["result"]
+            return requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}",
+                                auth=(self.username, self.password)).json()["result"]
         except json.decoder.JSONDecodeError:
             return "REPOX Error: This is a generic error and is thrown when Repox can't find a matching metadata.  " \
                    "This can be caused by an OAI record with the status of deleted."
@@ -412,13 +412,15 @@ class Repox:
     # Need to test
     def add_a_record(self, dataset_id: str, record_id: str, xml_record: str) -> int:
         return requests.post(f"{self.swagger_endpoint}/records?datasetId={dataset_id}&recordId={record_id}",
-                            auth=(self.username, self.password), headers="application/xml", data=xml_record).status_code
+                             auth=(self.username, self.password), headers="application/xml",
+                             data=xml_record).status_code
 
     def get_mapping_details(self, mapping_id) -> dict:
         """Returns metadata about a mapping as a dict."""
-        return json.loads(requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
-                                       auth=(self.username, self.password)).content)
+        return requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
+                            auth=(self.username, self.password)).json()
 
+    # This is a TODO.
     def add_mapping(self):
         """
         {
@@ -490,4 +492,4 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).delete_automatic_harvesting_task("bernhardt", "bernhardt_3"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).list_all_aggregators(False))
+    print(Repox(settings["url"], settings["username"], settings["password"]).get_record("abc123"))
