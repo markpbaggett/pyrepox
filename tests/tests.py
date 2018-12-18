@@ -47,8 +47,24 @@ def mocked_providers_get_list(*args, **kwargs):
     if kwargs["aggregator_id"] and kwargs["verbose"] is False:
         return MockResponse(["provider1", "provider2", "provider3"]).json()
 
-    elif kwargs["aggregator_id"] == "abc" and kwargs["verbose"] is True:
+    elif kwargs["aggregator_id"] and kwargs["verbose"] is True:
         return MockResponse([{"name": "provider1"}, {"name": "provider2"}, {"name": "provider3"}]).json()
+
+    return MockResponse(None)
+
+
+def mocked_providers_get_dict(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, response):
+            self.content = response
+
+        def json(self):
+            return self.content
+
+    if kwargs["provider_id"]:
+        return MockResponse({"provider": "abc"}).json()
+
+    return MockResponse(None)
 
 
 class RepoxTestGetAggregatorMethods(unittest.TestCase):
@@ -90,6 +106,10 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
         self.assertIs(type(repox_response), list)
         self.assertIs(type(repox_response[0]), dict)
 
+    @patch("repox.repox.Repox.get_provider", side_effect=mocked_providers_get_dict)
+    def test_get_provider(self, mock_get):
+        repox_response = self.request.get_provider(provider_id="abc")
+        self.assertIs(type(repox_response), dict)
 
 if __name__ == '__main__':
     unittest.main()
