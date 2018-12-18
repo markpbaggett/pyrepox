@@ -12,16 +12,16 @@ class Repox:
         self.headers = {'content-type': 'application/json'}
 
     # Aggregators
-    def list_all_aggregators(self, verbose: bool=True) -> list:
+    def list_all_aggregators(self, verbose: bool=False) -> list:
         """Returns all aggregators. If verbose is true, returns a list of dicts with metadata about aggregator.
         If verbose is false, returns a list of aggregator ids as strings.
         """
         if verbose is True:
-            return json.loads(requests.get(f"{self.swagger_endpoint}/aggregators",
-                                           auth=(self.username, self.password)).content)
+            return requests.get(f"{self.swagger_endpoint}/aggregators",
+                                auth=(self.username, self.password)).json()
         else:
-            aggregators = json.loads(requests.get(f"{self.swagger_endpoint}/aggregators",
-                                                  auth=(self.username, self.password)).content)
+            aggregators = requests.get(f"{self.swagger_endpoint}/aggregators",
+                                       auth=(self.username, self.password)).json()
             return [aggregator["id"] for aggregator in aggregators]
 
     def get_aggregator(self, aggregator_id: str) -> dict:
@@ -489,4 +489,5 @@ if __name__ == "__main__":
     #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
     #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).delete_automatic_harvesting_task("bernhardt", "bernhardt_3"))
+    #print(Repox(settings["url"], settings["username"], settings["password"]).delete_automatic_harvesting_task("bernhardt", "bernhardt_3"))
+    print(Repox(settings["url"], settings["username"], settings["password"]).list_all_aggregators(False))
