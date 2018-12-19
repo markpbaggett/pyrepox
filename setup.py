@@ -15,9 +15,14 @@ setup(
     maintainer_email="mbagget1@utk.edu",
     url="https://github.com/markpbaggett/pyrepox",
     packages=find_packages(),
+    install_requires=[
+        "requests>=2.2.1",
+        "xmltodict>=0.11.0"
+    ],
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python :: 3.7",
         "Operating System :: OS Independent"
     ],
+    keywords=["libraries", "dpla", "europeana", "aggregators"]
 )
