@@ -5,7 +5,7 @@
 ---
 
 Pyrepox is a lightweight [Repox](https://github.com/europeana/REPOX)
-client written t for Python. It is designed to make reading, writing,
+client written in Python. It is designed to make reading, writing,
 updating, and deleting content in your Repox instance as convenient as
 possible.
 
