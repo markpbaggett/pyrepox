@@ -1,7 +1,12 @@
 ![Travis icons](https://travis-ci.org/markpbaggett/pyrepox.png)
 
-# PyRepox
+# Pyrepox: Repox for Humans
 
 ---
 
-PyRepox is a python client for the [Repox API](https://github.com/europeana/REPOX).
+Pyrepox is a lightweight [Repox](https://github.com/europeana/REPOX)
+client written t for Python. It is designed to make reading, writing,
+updating, and deleting content in your Repox instance as convenient as
+possible.
+
+
