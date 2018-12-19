@@ -58,6 +58,11 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
         self.assertIs(type(repox_response), list)
         self.assertIs(type(repox_response[0]), dict)
 
+    @patch("repox.repox.Repox.get_dataset_details", side_effect=mocked_datasets_get_dict)
+    def test_get_dataset_details(self, mock_get):
+        repox_response = self.request.get_dataset_details(data_set_id="abc")
+        self.assertIs(type(repox_response), dict)
+
 
 if __name__ == '__main__':
     unittest.main()

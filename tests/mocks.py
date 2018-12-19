@@ -77,3 +77,17 @@ def mocked_datasets_get_list(*args, **kwargs):
         return MockResponse([{"name": "set1"}, {"name": "set2"}, {"name": "set3"}]).json()
 
     return MockResponse(None)
+
+
+def mocked_datasets_get_dict(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, response):
+            self.content = response
+
+        def json(self):
+            return self.content
+
+    if "data_set_id" in kwargs:
+        return MockResponse({"set_name": "nr", "id": "4"}).json()
+
+    return MockResponse(None)
