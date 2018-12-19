@@ -40,6 +40,7 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
         self.assertIs(type(repox_response), list)
         self.assertIs(type(repox_response[0]), str)
         repox_response = self.request.get_list_of_providers(aggregator_id="abc", verbose=True)
+        print(repox_response)
         self.assertIs(type(repox_response), list)
         self.assertIs(type(repox_response[0]), dict)
 
@@ -47,6 +48,15 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
     def test_get_provider(self, mock_get):
         repox_response = self.request.get_provider(provider_id="abc")
         self.assertIs(type(repox_response), dict)
+
+    @patch("repox.repox.Repox.get_list_of_sets_from_provider", side_effect=mocked_datasets_get_list)
+    def test_get_list_of_sets_from_provider(self, mock_get):
+        repox_response = self.request.get_list_of_sets_from_provider(provider_id="abc", verbose=False)
+        self.assertIs(type(repox_response), list)
+        self.assertIs(type(repox_response[0]), str)
+        repox_response = self.request.get_list_of_sets_from_provider(provider_id="abc", verbose=True)
+        self.assertIs(type(repox_response), list)
+        self.assertIs(type(repox_response[0]), dict)
 
 
 if __name__ == '__main__':

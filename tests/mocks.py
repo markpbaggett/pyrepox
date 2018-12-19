@@ -39,10 +39,10 @@ def mocked_providers_get_list(*args, **kwargs):
         def json(self):
             return self.content
 
-    if kwargs["aggregator_id"] and kwargs["verbose"] is False:
+    if "aggregator_id" in kwargs and kwargs["verbose"] is False:
         return MockResponse(["provider1", "provider2", "provider3"]).json()
 
-    elif kwargs["aggregator_id"] and kwargs["verbose"] is True:
+    elif "aggregator_id" in kwargs and kwargs["verbose"] is True:
         return MockResponse([{"name": "provider1"}, {"name": "provider2"}, {"name": "provider3"}]).json()
 
     return MockResponse(None)
@@ -56,7 +56,24 @@ def mocked_providers_get_dict(*args, **kwargs):
         def json(self):
             return self.content
 
-    if kwargs["provider_id"]:
+    if "provider_id" in kwargs:
         return MockResponse({"provider": "abc"}).json()
+
+    return MockResponse(None)
+
+
+def mocked_datasets_get_list(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, response):
+            self.content = response
+
+        def json(self):
+            return self.content
+
+    if "provider_id" in kwargs and kwargs["verbose"] is False:
+        return MockResponse(["set1, set2, set3"]).json()
+
+    elif "provider_id" in kwargs and kwargs["verbose"] is True:
+        return MockResponse([{"name": "set1"}, {"name": "set2"}, {"name": "set3"}]).json()
 
     return MockResponse(None)
