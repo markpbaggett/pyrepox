@@ -1,7 +1,6 @@
 import json
 import requests
 import xmltodict
-import yaml # Adding temporarily for testing only
 
 
 class Repox:
@@ -435,61 +434,3 @@ class Repox:
         :return:
         """
         return
-
-
-if __name__ == "__main__":
-    settings = yaml.load(open("settings.yml", "r"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).list_all_aggregators(False))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_specific_aggregator("TNDPLAr0"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_aggregator_options())
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_providers("TNDPLAr0"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_provider("utcr0"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_list_of_sets_from_provider("utcr0"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).count_records_from_dataset("p16877coll2"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping("UTKMODSrepaired"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("p16877coll2"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_record("oai:dltn.repox.test.bernhardt:urn:dpla.lib.utk.edu.mtsu_buchanan:oai:cdm15838.contentdm.oclc.org:buchanan/29"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).update_aggregator("test", homepage="http://google.com"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_last_ingest_date_of_set("bcpl"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).delete_aggregator("test"))
-    # x = {"id": "abcd",
-    #      "name": "Test",
-    #      "country": "United States",
-    #      "countryCode": "",
-    #      "description": "a",
-    #      "nameCode": "abcd",
-    #      "homepage": "google.com",
-    #      "providerType": "LIBRARY",
-    #      "email": "a"}
-    # print(Repox(settings["url"], settings["username"], settings["password"]).create_provider("dltn", x))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).update_provider("abcd", email="mark@utk.edu"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).create_aggregator("mark", "mark"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).assign_provider_to_new_aggregator("abcd", "dltn"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).delete_provider("abcd"))
-    # x = {
-    #     "containerType": "DEFAULT",
-    #     "dataSource":
-    #         {
-    #         "exportDir": "/home/vagrant",
-    #         "metadataFormat": "oai_dc",
-    #         "marcFormat": "",
-    #         "recordIdPolicy":
-    #             {"IdProvided": {}},
-    #         "isSample": False,
-    #         "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-    #         "namespace": "http://purl.org/dc/elements/1.1/",
-    #         "description": "nashville_test",
-    #         "id": "nashville_test",
-    #         "dataSetType": "OAI",
-    #         "oaiSourceURL": "https://dpla.lib.utk.edu/repox/OAIHandler",
-    #         "oaiSet": "p15769coll18"
-    #         },
-    #     "name": "nashville_test",
-    #     "nameCode": "nashville_test"
-    # }
-    # print(Repox(settings["url"], settings["username"], settings["password"]).create_dataset("utk", x))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).export_dataset("bcpl"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).get_mapping_details("UTKMODSrepaired"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).update_oai_dataset("bcpl", metadata_format="oai_qdc"))
-    #print(Repox(settings["url"], settings["username"], settings["password"]).delete_automatic_harvesting_task("bernhardt", "bernhardt_3"))
-    print(Repox(settings["url"], settings["username"], settings["password"]).get_record("abc123"))

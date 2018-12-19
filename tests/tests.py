@@ -48,5 +48,6 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
         repox_response = self.request.get_provider(provider_id="abc")
         self.assertIs(type(repox_response), dict)
 
+
 if __name__ == '__main__':
     unittest.main()

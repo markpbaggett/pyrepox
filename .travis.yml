@@ -5,3 +5,6 @@ install:
   - 'pip install pipenv'
   - 'pipenv sync'
 script: python -m unittest --verbose
+branches:
+  only:
+    - master
