@@ -194,7 +194,7 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
                             auth=(self.username, self.password)).json()["result"]
 
-    def count_records_from_dataset(self, data_set_id: str) -> str:
+    def count_records_in_dataset(self, data_set_id: str) -> str:
         """Returns the total number of records from a dataset as a string."""
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                             auth=(self.username, self.password)).json()["result"]
