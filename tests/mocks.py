@@ -91,3 +91,14 @@ def mocked_datasets_get_dict(*args, **kwargs):
         return MockResponse({"set_name": "nr", "id": "4"}).json()
 
     return MockResponse(None)
+
+
+def mocked_datasets_get_str(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, response):
+            self.content = response
+
+    if "data_set_id" in kwargs:
+        return MockResponse("November 8, 2018").content
+
+    return MockResponse(None)
