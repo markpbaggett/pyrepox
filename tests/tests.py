@@ -68,6 +68,15 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
         repox_response = self.request.get_last_ingest_date_of_set(data_set_id="abc")
         self.assertIs(type(repox_response), str)
 
+    @patch("repox.repox.Repox.get_last_ingest_date_of_set", side_effect=mocked_datasets_get_str)
+    def test_get_last_ingest_date_of_set(self, mock_get):
+        repox_response = self.request.get_last_ingest_date_of_set(data_set_id="abc")
+        self.assertIs(type(repox_response), str)
+
+    @patch("repox.repox.Repox.count_records_in_dataset", side_effect=mocked_datasets_get_str)
+    def test_get_count_records_in_set(self, mock_get):
+        repox_response = self.request.count_records_in_dataset(data_set_id="abc")
+        self.assertIs(type(repox_response), str)
 
 if __name__ == '__main__':
     unittest.main()
