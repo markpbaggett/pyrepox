@@ -4,6 +4,18 @@ from unittest.mock import patch
 from .mocks import *
 
 
+class RepoxTestInitializeAndPrivates(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super(RepoxTestInitializeAndPrivates, self).__init__(*args, **kwargs)
+
+    def test_initialization(self):
+        self.assertIsInstance(Repox("a", "b", "c"), Repox)
+
+    @unittest.expectedFailure
+    def test_esure_failure(self):
+        self.assertNotIsInstance(Repox("a", "b"), Repox)
+        self.assertNotIsInstance(Repox("a"), Repox)
+
 class RepoxTestGetAggregatorMethods(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(RepoxTestGetAggregatorMethods, self).__init__(*args, **kwargs)
@@ -77,6 +89,7 @@ class RepoxTestGetProviderMethods(unittest.TestCase):
     def test_get_count_records_in_set(self, mock_get):
         repox_response = self.request.count_records_in_dataset(data_set_id="abc")
         self.assertIs(type(repox_response), str)
+
 
 if __name__ == '__main__':
     unittest.main()
