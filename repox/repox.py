@@ -10,6 +10,9 @@ class Repox:
         self.password = password
         self.headers = {'content-type': 'application/json'}
 
+    def __repr__(self):
+        return f"Repox connection instance based on {swagger_endpoint}."
+
     # Aggregators
     def list_all_aggregators(self, verbose: bool=False) -> list:
         """Returns all aggregators. If verbose is true, returns a list of dicts with metadata about aggregator.
@@ -288,11 +291,47 @@ class Repox:
     @staticmethod
     def __metadata_helper(metadata_format):
         """Private method that accepts a metadata format and returns a matching namespace and schema if one exists."""
-        formats = {"mods":
-            {
-                "schema": 'http://www.loc.gov/standards/mods/v3/mods-3-5.xsd',
-                "namespace": 'http://www.loc.gov/mods/v3'
-            },
+        formats = {
+            "edm":
+                {
+                    "schema": "http://www.europeana.eu/schemas/edm/EDM.xsd",
+                    "namespace": "http://www.europeana.eu/schemas/edm/",
+                },
+            "ese":
+                {
+                    "schema": "http://www.europeana.eu/schemas/ese/ESE-V3.4.xsd",
+                    "namespace": "http://www.europeana.eu/schemas/ese/"
+                },
+            "ISO2709":
+                {
+                    "schmea": "info:lc/xmlns/marcxchange-v1.xsd",
+                    "namespace": "info:lc/xmlns/marcxchange-v1"
+                },
+            "lido":
+                {
+                    "schema": "http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd",
+                    "namespace": "http://www.lido-schema.org",
+                },
+            "MarcXchange":
+                {
+                    "namespace": "info:lc/xmlns/marcxchange-v1",
+                    "schema": "info:lc/xmlns/marcxchange-v1.xsd"
+                },
+            "mods":
+                {
+                    "schema": 'http://www.loc.gov/standards/mods/v3/mods-3-5.xsd',
+                    "namespace": 'http://www.loc.gov/mods/v3'
+                },
+            "NLM-AI":
+                {
+                    "schema": "ncbi-mathml2/mathml2.xsd",
+                    "namespace": "http://www.w3.org/1998/Math/MathML"
+                },
+            "NLM-Book":
+                {
+                    "namespace": "http://www.w3.org/1998/Math/MathML",
+                    "schema": "ncbi-mathml2/mathml2.xsd",
+                },
             "oai_dc":
                 {
                     "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
@@ -302,6 +341,11 @@ class Repox:
                 {
                     "schema": "http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd",
                     "namespace": "http://worldcat.org/xmlschemas/qdc-1.0"
+                },
+            "tel":
+                {
+                    "schema": "http://www.europeana.eu/schemas/ese/ESE-V3.4.xsd",
+                    "namespace": "http://krait.kb.nl/coop/tel/handbook/telterms.html"
                 }
         }
         current_format = metadata_format.lower()
