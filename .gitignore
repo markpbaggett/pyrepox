@@ -3,3 +3,4 @@
 build/
 dist/
 repox.egg-info/
+docs/_build
