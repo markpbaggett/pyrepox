@@ -15,8 +15,14 @@ class Repox:
 
     # Aggregators
     def list_all_aggregators(self, verbose: bool=False) -> list:
-        """Returns all aggregators. If verbose is true, returns a list of dicts with metadata about aggregator.
-        If verbose is false, returns a list of aggregator ids as strings.
+        """Returns all aggregators and optionally metadata about each.
+
+        If verbose is true, returns a list of dicts with
+        metadata about aggregator. If verbose is false, returns a list of aggregator ids as strings.
+
+        :param verbose: Boolean value for whether or not you want metadata about each aggregator returned.
+        :return: a list of aggregators
+        :rtype: list
         """
         if verbose is True:
             return requests.get(f"{self.swagger_endpoint}/aggregators",
