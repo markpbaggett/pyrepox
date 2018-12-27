@@ -478,37 +478,30 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                             auth=(self.username, self.password)).json()["result"]
 
-    # We need to determine what's actually required and what is not and write something to help with unpacking this.
+    # TODO Determine which keys are required and which are not and write something to help with unpacking this.
     def create_dataset(self, provider_id: str, metadata: dict) -> int:
-        """Takes a provider_id and creates a new dataset in it based on the contents of a metadata dict.
+        """Create a dataset.
 
-        Example metadata:
-        {
-            "containerType": "DEFAULT",
-            "dataSource":
-                {
-                    "exportDir": "/home/vagrant",
-                    "metadataFormat": "oai_dc",
-                    "marcFormat": "",
-                    "recordIdPolicy":
-                        {
-                            "IdProvided":
-                                {}
-                        },
-                    "isSample": False,
-                    "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-                    "namespace": "http://purl.org/dc/elements/1.1/",
-                    "description": "nashville_test",
-                    "id": "nashville_test",
-                    "dataSetType": "OAI",
-                    "oaiSourceURL": "https://dpla.lib.utk.edu/repox/OAIHandler",
-                    "oaiSet": "p15769coll18"
-            },
-            "name": "nashville_test",
-            "nameCode": "nashville_test"
-        }
+        Takes a provider_id and creates a new dataset in it based on the contents of a metadata dict.
 
-        Returns an HTTP status code as an int.
+        Args:
+            provider_id (str): The provider_id of the provider that you want to add your new dataset to.
+            metadata (dict): Metadata about the new dataset you want to create.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> details = {
+            ... "containerType": "DEFAULT", "dataSource": { "exportDir": "/home/vagrant", "metadataFormat": "oai_dc",
+            ... "marcFormat": "", "recordIdPolicy": { "IdProvided": {} }, "isSample": False, "schema":
+            ... "http://www.openarchives.org/OAI/2.0/oai_dc.xsd", "namespace": "http://purl.org/dc/elements/1.1/",
+            ... "description": "nashville_test", "id": "nashville_test", "dataSetType": "OAI", "oaiSourceURL":
+            ... "https://dpla.lib.utk.edu/repox/OAIHandler", "oaiSet": "p15769coll18" }, "name": "nashville_test",
+            ... "nameCode": "nashville_test" }
+            >>> Repox("http://localhost:8080", "username", "password").create_dataset("nashville", details)
+            "201"
+
         """
         return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
                              auth=(self.username, self.password), data=json.dumps(metadata)).status_code
