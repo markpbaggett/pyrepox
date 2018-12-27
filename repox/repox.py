@@ -17,12 +17,15 @@ class Repox:
     def list_all_aggregators(self, verbose: bool=False) -> list:
         """Returns all aggregators and optionally metadata about each.
 
-        If verbose is true, returns a list of dicts with
-        metadata about aggregator. If verbose is false, returns a list of aggregator ids as strings.
+        This method returns all aggregators for this Repox install.  Optionally, you can also retrieve metadata about
+        each aggregator by passing True to the verbose parameter.  By default, this value is False.
 
-        :param verbose: Boolean value for whether or not you want metadata about each aggregator returned.
-        :return: a list of aggregators
-        :rtype: list
+        Args:
+            verbose (bool): specify whether you want metadata returned. False by default.
+
+        Returns:
+            list: A list of aggregators.  The list is strings if verbose is False and dicts if it is True.
+
         """
         if verbose is True:
             return requests.get(f"{self.swagger_endpoint}/aggregators",
@@ -33,7 +36,12 @@ class Repox:
             return [aggregator["id"] for aggregator in aggregators]
 
     def get_aggregator(self, aggregator_id: str) -> dict:
-        """Takes an aggregator id and returns metadata about the aggregator as a dict."""
+        """Takes an aggregator id and returns metadata about the aggregator as a dict.
+
+        :param aggregator_id: Specify the aggregator you're looking for by specifying its aggregator_id.
+        :return: a dict of
+
+        """
         return requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
                             auth=(self.username, self.password)).json()
 

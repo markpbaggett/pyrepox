@@ -39,7 +39,7 @@ If you are looking for information about a specific method, its parameters, or i
 .. toctree::
    :maxdepth: 2
 
-   api
+   source/repox
 
 
 Search / Index
