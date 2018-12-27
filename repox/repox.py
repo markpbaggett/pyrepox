@@ -409,7 +409,34 @@ class Repox:
             return [data_set["dataSource"]["id"] for data_set in data_sets]
 
     def get_dataset_details(self, data_set_id: str) -> dict:
-        """Returns metadata about a dataset as a dict."""
+        """Get details about a specific dataset.
+
+        Requires a data_set_id and returns metadata about it as a dict.
+
+        Args:
+            data_set_id (str): data_set_id of the dataset you want details about.
+
+        Returns:
+            dict: Details about the dataset as a dict.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_dataset_details("nr")
+            "{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'OAI', 'id': 'nr', 'schema':
+            'http://www.openarchives.org/OAI/2.0/oai_dc.xsd', 'namespace': 'http://www.openarchives.org/OAI/2.0/',
+            'description': "Nashville Public Library's Digital Collections", 'metadataFormat': 'oai_dc', 'isSample':
+            False, 'exportDir': '/vhosts/repoxdata/export/nr', 'oaiSourceURL':
+            'http://nashville.contentdm.oclc.org/oai/oai.php', 'oaiSet': 'nr', 'recordIdPolicy': {'IdProvided': {}}},
+            'nameCode': 'nashvillepublic_nr', 'name': 'Nashville Public Library nr'}"
+            >>> Repox("http://localhost:8080", "username", "password").get_dataset_details("cmhf_musicaudio")
+            "{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'DIR', 'id': 'cmhf_musicaudio', 'schema':
+            'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd', 'namespace': 'http://worldcat.org/xmlschemas/qdc-1.0',
+            'description': 'cmhf_musicaudio', 'metadataFormat': 'oai_qdc', 'isSample': False, 'exportDir':
+            '/vhosts/repoxdata/export/cmhf_musicaudio', 'marcFormat': '', 'sourcesDirPath':
+            '/vhosts/repoxdata/cmhf_qdc', 'recordXPath': 'oai_qdc:qualifieddc', 'isoVariant': 'STANDARD',
+            'recordIdPolicy': {'IdGenerated': {}}, 'retrieveStrategy': {'FOLDER': {}}}, 'nameCode': 'cmhf_musicaudio',
+            'name': 'cmhf_musicaudio'}"
+
+        """
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
                             auth=(self.username, self.password)).json()
 
