@@ -19,7 +19,7 @@ class Repox:
         self.headers = {'content-type': 'application/json'}
 
     def __repr__(self):
-        return f"Repox connection instance based on {swagger_endpoint}."
+        return f"Repox connection instance based on {self.swagger_endpoint}."
 
     # Aggregators
     def list_all_aggregators(self, verbose: bool=False) -> list:
@@ -59,6 +59,10 @@ class Repox:
         Returns:
             dict: A dict of metadata about the specified aggregator.
 
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').get_aggregator("dltn")
+            "{'id': 'dltn', 'name': 'DLTN Test', 'nameCode': 'dltn', 'homepage': 'http://localhost:8080/repox'}"
+
         """
         return requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
                             auth=(self.username, self.password)).json()
@@ -82,6 +86,10 @@ class Repox:
 
         Returns:
             int: The HTTP status code based on your request.
+
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').create_aggregator("new_dltn", "New DLTN")
+            "201"
 
         """
         if name_code == "":
@@ -109,6 +117,11 @@ class Repox:
         Returns:
             int: The HTTP status code from your request.
 
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').update_aggregator("new_dltn",
+            homepage="http://www.tenn-share.org/af_membercommittee.asp?committeeid=28")
+            "200"
+
         """
         old_data = self.get_aggregator(aggregator_id)
         if aggregator_name == "":
@@ -134,6 +147,10 @@ class Repox:
 
         Returns:
             int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').delete_aggregator("new_dltn")
+            "200"
 
         """
         return requests.delete(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
