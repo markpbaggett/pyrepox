@@ -549,15 +549,34 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}?newDatasetId={new_dataset_id}",
                              headers=self.headers, auth=(self.username, self.password)).status_code
 
-    # If this goal is to humanize this, we need to make this as simple as possible for the user.
-    # What does a oai set look like compared to a file set or z3950 set?
+    # TODO Create similar update methods for other dataset types.
     def update_oai_dataset(self, dataset_id: str, export_dir: str="", metadata_format: str="", description: str="",
                            is_sample: bool=False, oai_url: str="", set_name: str="", name: str="", name_code: str="") \
             -> int:
-        """Requires a dataset_id and accepts most metadata elements for an OAI dataset as a str.  If a metadata
+        """Update an existing oai dataset.
+
+        Requires a dataset_id and optionally accepts most metadata elements for an OAI dataset as a str.  If a metadata
         element is not passed, the value is taken from the previous data.
 
-        Returns an HTTP status code as an int.
+        Args:
+            dataset_id (str): Required. The dataset_id of the dataset being updated.
+            export_dir (str): Optional. A new path to export files to on disk.
+            metadata_format (str): Optional. A new metadata format for the set.
+            description (str): Optional. A new description for the oai set.
+            is_sample (bool): Optional. Specify whether the oai set is a sample (False) or all records (True).
+            oai_url (str): Optional.  A new url for the associated OAI provider.
+            set_name (str): Optional. Change the set_name for the associated OAI provider.
+            name (str): Optional. Change the name of the oai set.
+            name_code (str): Optional. Change the name_code of the oai_set.
+
+        Returns:
+            int: The HTTP status Code of the request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").update_oai_dataset("bcpl",
+            ... export_dir="/vagrant/export")
+            200
+
         """
         old_data = self.get_dataset_details(dataset_id)
         data_source_data = {"exportDir": export_dir, "description": description, "oaiSourceURL": oai_url,
