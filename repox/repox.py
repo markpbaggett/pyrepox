@@ -694,7 +694,23 @@ class Repox:
 
     # Statistics
     def get_statistics(self) -> dict:
-        """Returns statistics about the entire Repox instance as a dict."""
+        """Get statistics about an entire Repox instance.
+
+        Returns:
+            dict: A dict of statistics.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_statistics()
+            '{"repox-statistics": {"@generationDate": "2018-12-27 16:08:02 EST", "dataSourcesIdExtracted": "0",
+            "dataSourcesIdGenerated": "11", "dataSourcesIdProvided": "175", "aggregators": "1", "dataProviders": "9",
+            "dataSourcesOai": "175", "dataSourcesZ3950": "0", "dataSourcesDirectoryImporter": "11",
+            "dataSourcesMetadataFormats": {"dataSourcesMetadataFormat": [{"metadataFormat": "mods", "dataSources": "45",
+            "records": "25636"}, {"metadataFormat": "oai_dc", "dataSources": "86", "records": "160203"}, {
+            "metadataFormat": "oai_qdc", "dataSources": "55", "records": "30799"}]}, "recordsAvgDataSource":
+            "1164.7205", "recordsAvgDataProvider": "24070.889", "countriesRecords": {"countryRecords": [{"@country":
+            "al", "records": "100853"}, {"@country": "de", "records": "115785"}]}, "recordsTotal": "216638"}}'
+
+        """
         data = requests.get(f"{self.swagger_endpoint}/statistics",
                             auth=(self.username, self.password)).json()
         return json.dumps(xmltodict.parse(data["result"]))
