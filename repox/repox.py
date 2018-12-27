@@ -36,10 +36,10 @@ class Repox:
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').list_all_aggregators(True)
-            "[{'id': 'dltn', 'name': 'Digital Library of Tennessee', 'nameCode': 'dltn',
-            'homepage': 'http://localhost:8080/repox'}]"
+            [{'id': 'dltn', 'name': 'Digital Library of Tennessee', 'nameCode': 'dltn',
+            'homepage': 'http://localhost:8080/repox'}]
             >>> Repox('http://localhost:8080', 'username', 'password').list_all_aggregators(False)
-            "['dltn']"
+            ['dltn']
 
         """
         if verbose is True:
@@ -61,7 +61,7 @@ class Repox:
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').get_aggregator("dltn")
-            "{'id': 'dltn', 'name': 'DLTN Test', 'nameCode': 'dltn', 'homepage': 'http://localhost:8080/repox'}"
+            {'id': 'dltn', 'name': 'DLTN Test', 'nameCode': 'dltn', 'homepage': 'http://localhost:8080/repox'}
 
         """
         return requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
@@ -89,7 +89,7 @@ class Repox:
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').create_aggregator("new_dltn", "New DLTN")
-            "201"
+            201
 
         """
         if name_code == "":
@@ -120,7 +120,7 @@ class Repox:
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').update_aggregator("new_dltn",
             ... homepage="http://www.tenn-share.org/af_membercommittee.asp?committeeid=28")
-            "200"
+            200
 
         """
         old_data = self.get_aggregator(aggregator_id)
@@ -150,7 +150,7 @@ class Repox:
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').delete_aggregator("new_dltn")
-            "200"
+            200
 
         """
         return requests.delete(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
@@ -172,11 +172,11 @@ class Repox:
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').get_list_of_providers("TNDPLAr0")
-            "['CountryMusicHallofFamer0', 'CrossroadstoFreedomr0', 'KnoxPLr0', 'memphispublicr0', 'MTSUr0',
-            'nashvillepublicr0', 'tslar0', 'utcr0', 'UTKr0']"
+            ['CountryMusicHallofFamer0', 'CrossroadstoFreedomr0', 'KnoxPLr0', 'memphispublicr0', 'MTSUr0',
+            'nashvillepublicr0', 'tslar0', 'utcr0', 'UTKr0']
 
             >>> Repox('http://localhost:8080', 'username', 'password').get_list_of_providers("TNDPLAr0", True)
-            "[{'id': 'CountryMusicHallofFamer0', 'name': 'Country Music Hall of Fame', 'countryCode': 'al',
+            [{'id': 'CountryMusicHallofFamer0', 'name': 'Country Music Hall of Fame', 'countryCode': 'al',
             'description': '', 'nameCode': '', 'homepage': 'http://digi.countrymusichalloffame.org/oai/oai.php',
             'providerType': 'MUSEUM', 'email': ''}, {'id': 'CrossroadstoFreedomr0', 'name': 'CrossroadstoFreedom',
             'countryCode': 'de', 'description': '', 'nameCode': '', 'homepage': '', 'providerType': 'ARCHIVE',
@@ -192,7 +192,7 @@ class Repox:
             'email': ''}, {'id': 'utcr0', 'name': 'UT Chattanooga', 'countryCode': 'al', 'description': '', 'nameCode':
             'utc', 'homepage': '', 'providerType': 'MUSEUM', 'email': ''}, {'id': 'UTKr0', 'name': 'UTK', 'countryCode':
             'al', 'description': 'University of Tennessee Knoxville', 'nameCode': '', 'homepage': '', 'providerType':
-            'LIBRARY', 'email': ''}]"
+            'LIBRARY', 'email': ''}]
 
         """
         if verbose is True:
@@ -216,8 +216,8 @@ class Repox:
 
         Examples:
               >>> Repox('http://localhost:8080', 'username', 'password').get_provider("UTKr0")
-              "{'id': 'UTKr0', 'name': 'UTK', 'countryCode': 'al', 'description': 'University of Tennessee Knoxville',
-              'nameCode': '', 'homepage': '', 'providerType': 'LIBRARY', 'email': ''}"
+              {'id': 'UTKr0', 'name': 'UTK', 'countryCode': 'al', 'description': 'University of Tennessee Knoxville',
+              'nameCode': '', 'homepage': '', 'providerType': 'LIBRARY', 'email': ''}
 
         """
         return requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
@@ -242,7 +242,7 @@ class Repox:
             ... "UT Chattanooga", "country": "United States", "countryCode": "", "description":
             ... "OAI Sets from the University of Tennessee, Chattanooga", "nameCode": "utc", "homepage":
             ... "http://cdm16877.contentdm.oclc.org", "providerType": "LIBRARY", "email": "carolyn-runyon@utc.edu"})
-            "201"
+            201
 
         """
         return requests.post(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}", headers=self.headers,
@@ -275,7 +275,7 @@ class Repox:
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').update_provider("UTKr0",
             ... homepage="http://dloai.lib.utk.edu/cgi-bin/XMLFile/dlmodsoai/oai.pl", email="mbagget1@utk.edu")
-            "200"
+            200
 
         """
         old_data = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
@@ -327,7 +327,7 @@ class Repox:
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").assign_provider_to_new_aggregator("abcd123",
             ... "NewDLTNr0")
-            "200"
+            200
 
         """
         metadata = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
@@ -349,7 +349,7 @@ class Repox:
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").delete_provider("abcd123")
-            "200"
+            200
 
         """
         return requests.delete(f"{self.swagger_endpoint}/providers/{provider_id}",
@@ -371,15 +371,15 @@ class Repox:
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").get_list_of_sets_from_provider("utcr0")
-            "['p16877coll1', 'p16877coll2', 'p16877coll3', 'p16877coll4', 'p16877coll5', 'p16877coll6', 'p16877coll7',
+            ['p16877coll1', 'p16877coll2', 'p16877coll3', 'p16877coll4', 'p16877coll5', 'p16877coll6', 'p16877coll7',
             'p16877coll8', 'p16877coll9', 'utc_p16877coll10', 'utc_p16877coll11', 'utc_p16877coll12',
             'utc_p16877coll13', 'utc_p16877coll14', 'utc_p16877coll15', 'utc_p16877coll16', 'utc_p16877coll17',
             'utc_p16877coll18', 'utc_p16877coll19', 'utc_p16877coll20', 'utc_p16877coll21', 'utc_p16877coll22',
             'utc_p16877coll23', 'utc_p16877coll24', 'utc_p16877coll25', 'utc_p16877coll26', 'utc_p16877coll27',
-            'utc_p16877coll28']"
+            'utc_p16877coll28']
             >>> Repox("http://localhost:8080", "username", "password").get_list_of_sets_from_provider("nashviller0",
             ... True)
-            "[{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'OAI', 'id': 'nr', 'schema':
+            [{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'OAI', 'id': 'nr', 'schema':
             'http://www.openarchives.org/OAI/2.0/oai_dc.xsd', 'namespace': 'http://www.openarchives.org/OAI/2.0/',
             'description': "Nashville Public Library's Digital Collections", 'metadataFormat': 'oai_dc', 'isSample':
             False, 'exportDir': '/vhosts/repoxdata/export/nr', 'oaiSourceURL':
@@ -397,7 +397,7 @@ class Repox:
             '/vhosts/repoxdata/export/nash_p15769coll19', 'marcFormat': '', 'sourcesDirPath':
             '/vhosts/repoxdata/nash_p15769coll19', 'recordXPath': 'oai_qdc:qualifieddc', 'isoVariant': 'STANDARD',
             'recordIdPolicy': {'IdGenerated': {}}, 'retrieveStrategy': {'FOLDER': {}}}, 'nameCode': 'nash_p15769coll19',
-            'name': 'nash_p15769coll19'}]"
+            'name': 'nash_p15769coll19'}]
 
         """
         if verbose is True:
@@ -421,7 +421,7 @@ class Repox:
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").get_dataset_details("nr")
-            "{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'OAI', 'id': 'nr', 'schema':
+            {'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'OAI', 'id': 'nr', 'schema':
             'http://www.openarchives.org/OAI/2.0/oai_dc.xsd', 'namespace': 'http://www.openarchives.org/OAI/2.0/',
             'description': "Nashville Public Library's Digital Collections", 'metadataFormat': 'oai_dc', 'isSample':
             False, 'exportDir': '/vhosts/repoxdata/export/nr', 'oaiSourceURL':
@@ -434,7 +434,7 @@ class Repox:
             '/vhosts/repoxdata/export/cmhf_musicaudio', 'marcFormat': '', 'sourcesDirPath':
             '/vhosts/repoxdata/cmhf_qdc', 'recordXPath': 'oai_qdc:qualifieddc', 'isoVariant': 'STANDARD',
             'recordIdPolicy': {'IdGenerated': {}}, 'retrieveStrategy': {'FOLDER': {}}}, 'nameCode': 'cmhf_musicaudio',
-            'name': 'cmhf_musicaudio'}"
+            'name': 'cmhf_musicaudio'}
 
         """
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
@@ -500,7 +500,7 @@ class Repox:
             ... "https://dpla.lib.utk.edu/repox/OAIHandler", "oaiSet": "p15769coll18" }, "name": "nashville_test",
             ... "nameCode": "nashville_test" }
             >>> Repox("http://localhost:8080", "username", "password").create_dataset("nashville", details)
-            "201"
+            201
 
         """
         return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
