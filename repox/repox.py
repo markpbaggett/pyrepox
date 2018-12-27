@@ -119,7 +119,7 @@ class Repox:
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').update_aggregator("new_dltn",
-            homepage="http://www.tenn-share.org/af_membercommittee.asp?committeeid=28")
+            ... homepage="http://www.tenn-share.org/af_membercommittee.asp?committeeid=28")
             "200"
 
         """
@@ -158,8 +158,42 @@ class Repox:
 
     # Providers
     def get_list_of_providers(self, aggregator_id: str, verbose: bool=False) -> list:
-        """Takes an aggregator id and returns the providers that belong to that aggregator as a list. If verbose is
-        true, metadata is included about each provider. If it is false, the list consists of provider ids as strings.
+        """Get a list of providers and its metadata for a specific aggregator.
+
+        Requires an aggregator id and returns the providers that belong to it as a list. Optionally, you can also
+        return metadata about each provider.
+
+        Args:
+            aggregator_id (str): Required. The aggregator_id of the providers you want to return.
+            verbose (bool): Optional. If True, return metadata about each provider.
+
+        Returns:
+            list: The list of providers that match your request.
+
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').get_list_of_providers("TNDPLAr0")
+            "['CountryMusicHallofFamer0', 'CrossroadstoFreedomr0', 'KnoxPLr0', 'memphispublicr0', 'MTSUr0',
+            'nashvillepublicr0', 'tslar0', 'utcr0', 'UTKr0']"
+
+            >>> Repox('http://localhost:8080', 'username', 'password').get_list_of_providers("TNDPLAr0", True)
+            "[{'id': 'CountryMusicHallofFamer0', 'name': 'Country Music Hall of Fame', 'countryCode': 'al',
+            'description': '', 'nameCode': '', 'homepage': 'http://digi.countrymusichalloffame.org/oai/oai.php',
+            'providerType': 'MUSEUM', 'email': ''}, {'id': 'CrossroadstoFreedomr0', 'name': 'CrossroadstoFreedom',
+            'countryCode': 'de', 'description': '', 'nameCode': '', 'homepage': '', 'providerType': 'ARCHIVE',
+            'email': ''}, {'id': 'KnoxPLr0', 'name': 'Knoxville Public Library', 'countryCode': 'al', 'description': '',
+            'nameCode': 'KnoxPublicLibrary', 'homepage': '', 'providerType': 'LIBRARY', 'email': ''},
+            {'id': 'memphispublicr0', 'name': 'Memphis Public Library', 'countryCode': 'al', 'description': '',
+            'nameCode': 'memphispublic', 'homepage': '', 'providerType': 'LIBRARY', 'email': ''}, {'id': 'MTSUr0',
+            'name': 'Middle Tennessee State University', 'countryCode': 'al', 'description': '', 'nameCode': 'mtsu',
+            'homepage': '', 'providerType': 'LIBRARY', 'email': ''}, {'id': 'nashvillepublicr0', 'name':
+            'Nashville Public Library', 'countryCode': 'al', 'description': '', 'nameCode': 'nashvillepublic',
+            'homepage': '', 'providerType': 'LIBRARY', 'email': ''}, {'id': 'tslar0', 'name': 'Tennessee State Library',
+            'countryCode': 'al', 'description': '', 'nameCode': 'tsla', 'homepage': '', 'providerType': 'LIBRARY',
+            'email': ''}, {'id': 'utcr0', 'name': 'UT Chattanooga', 'countryCode': 'al', 'description': '', 'nameCode':
+            'utc', 'homepage': '', 'providerType': 'MUSEUM', 'email': ''}, {'id': 'UTKr0', 'name': 'UTK', 'countryCode':
+            'al', 'description': 'University of Tennessee Knoxville', 'nameCode': '', 'homepage': '', 'providerType':
+            'LIBRARY', 'email': ''}]"
+
         """
         if verbose is True:
             return requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
@@ -170,44 +204,89 @@ class Repox:
             return [provider["id"] for provider in providers]
 
     def get_provider(self, provider_id: str) -> dict:
-        """Takes a provider id and returns a dict of metadata about the provider."""
+        """Get metadata about a provider.
+
+        Requires a provider id and returns metadata about it.
+
+        Args:
+            provider_id (str): The provider_id of the provider you want to return.
+
+        Returns:
+            dict: The metadata about your specified provider.
+
+        Examples:
+              >>> Repox('http://localhost:8080', 'username', 'password').get_provider("UTKr0")
+              "{'id': 'UTKr0', 'name': 'UTK', 'countryCode': 'al', 'description': 'University of Tennessee Knoxville',
+              'nameCode': '', 'homepage': '', 'providerType': 'LIBRARY', 'email': ''}"
+
+        """
         return requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
                             auth=(self.username, self.password)).json()
 
-    # Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
+    # TODO Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
+    # TODO Describe the required parts of a metadata dict.
     def create_provider(self, aggregator_id: str, metadata: dict) -> int:
-        """Takes an aggregator id and adds a new provider based on the contents of a metadata dict.
-        A metadata dict looks like this:
+        """Create a provider in a specific aggregator.
 
-        {"id": "abcd123",
-         "name": "Test provider",
-         "country": "United States",
-         "countryCode": "",
-         "description": "What is this",
-         "nameCode": "abcd123",
-         "homepage": "https://google.com",
-         "providerType": "LIBRARY",
-         "email": "mbagget1@utk.edu"}
+        Requires an aggregator_id and adds a new provider based on the contents of a metadata dict.
 
-        Returns an HTTP status code as a string.
+        Args:
+            aggregator_id (str): Required.  The aggregator_id of the aggregator you are adding your provider to.
+            metadata (dict): Required.  Key value pairs that describe the provider you are creating.
+
+        Returns:
+            int: The HTTP status code of the request.
+
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').create_provider("dltn", {"id": "utc", "name":
+            ... "UT Chattanooga", "country": "United States", "countryCode": "", "description":
+            ... "OAI Sets from the University of Tennessee, Chattanooga", "nameCode": "utc", "homepage":
+            ... "http://cdm16877.contentdm.oclc.org", "providerType": "LIBRARY", "email": "carolyn-runyon@utc.edu"})
+            "201"
+
         """
         return requests.post(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}", headers=self.headers,
                              auth=(self.username, self.password), data=json.dumps(metadata)).status_code
 
+    # TODO Determine if there is a list of allowed country codes.
+    # TODO Determine if there is an exhaustive list of provider_types.
     def update_provider(self, provider_id: str, name: str="", country: str="", country_code: str="",
                         description: str="", name_code: str="", homepage: str="", provider_type: str="",
                         email: str="") -> int:
-        """Takes a provider_id as a string and optionally any metadata value for any other field you want to change.
-        If a field value is not provided, the current field value is passed to the API along with new fields.
+        """Update the metadata about a provider.
 
-        Returns the HTTP status code of the response.
+        Requires a provider_id as a string and optionally any metadata value for any other field you want to modify.
+        If a field value is not provided, the current field value is passed to the API along with new values.
+
+        Args:
+            provider_id (str): Required.  The provider_id of the provider you want to modify.
+            name (str): Optional. A new name for the specified provider.
+            country (str): Optional. A new country value for the specified provider.
+            country_code (str): Optional.  A new country_code to represent the provider.
+            description (str): Optional. A new description for the provider.
+            name_code (str): Optional. A new name_code to represent the provider.
+            homepage (str): Optional. A new homepage that represents the provider.
+            provider_type (str): Optional. A new provider_type that represents the provider.
+            email (str): Optional. A new email address to associate with the provider.
+
+        Returns:
+            int: The HTTP status code response of the request.
+
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').update_provider("UTKr0",
+            ... homepage="http://dloai.lib.utk.edu/cgi-bin/XMLFile/dlmodsoai/oai.pl", email="mbagget1@utk.edu")
+            "200"
+
         """
         old_data = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
                                 auth=(self.username, self.password)).json()
         if name == "":
             name = old_data["name"]
         if country == "":
-            country = old_data["country"]
+            try:
+                country = old_data["country"]
+            except KeyError:
+                country = ""
         if country_code == "":
             country_code = old_data["countryCode"]
         if description == "":
