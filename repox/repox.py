@@ -520,7 +520,7 @@ class Repox:
             int: The HTTP status code of your request.
 
         Examples:
-            >>> Repox("http://localhost:8080", "username", "password").export_dataset()
+            >>> Repox("http://localhost:8080", "username", "password").export_dataset("nr")
             200
 
         """
@@ -528,10 +528,23 @@ class Repox:
                              auth=(self.username, self.password)).status_code
 
     def copy_dataset(self, dataset_id: str, new_dataset_id: str) -> int:
-        """Takes a dataset_id for an existing dataset and creates a new dataset in the same provider based on existing
-        metadata and a new_dataset_id.
+        """Make a copy of an existing dataset with a new id.
 
-        Returns an HTTP status code as an int.
+        Requires the dataset_id of an existing dataset and creates a new dataset in the same provider based on existing
+        metadata and the value of new_dataset_id.
+
+        Args:
+            dataset_id (str): The dataset_id of the dataset you want to copy.
+            new_dataset_id (str): A dataset_id for your new copy of the dataset.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").copy_dataset("nashville_test2",
+            ... "nashville_test3")
+            201
+
         """
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}?newDatasetId={new_dataset_id}",
                              headers=self.headers, auth=(self.username, self.password)).status_code
