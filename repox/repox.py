@@ -617,8 +617,18 @@ class Repox:
                                auth=(self.username, self.password)).status_code
 
     @staticmethod
-    def __metadata_helper(metadata_format):
-        """Private method that accepts a metadata format and returns a matching namespace and schema if one exists."""
+    def __metadata_helper(metadata_format: str) -> dict:
+        """Finds matching namespace and schema if known.
+
+        Private method that accepts a metadata format and returns a matching namespace and schema if one exists.
+
+        Args:
+            metadata_format (str): The metadata format to match on.
+
+        Returns:
+            dict: A dict with schema and namespace if found. If not, returned dict has empty schema and namespace.
+
+        """
         formats = {
             "edm":
                 {
