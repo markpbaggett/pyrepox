@@ -598,9 +598,20 @@ class Repox:
                             auth=(self.username, self.password), data=json.dumps(old_data)).status_code
 
     def delete_dataset(self, dataset_id: str) -> int:
-        """Requires a dataset_id as a string and deletes the corresponding dataset.
+        """Delete a dataset.
 
-        Returns an HTTP status code as an int.
+        Requires the dataset_id and deletes the corresponding dataset.
+
+        Args:
+            dataset_id (str): The dataset_id of the dataset you want to delete.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").delete_dataset("nashville_test")
+            200
+
         """
         return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}",
                                auth=(self.username, self.password)).status_code
