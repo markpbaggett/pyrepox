@@ -5,6 +5,14 @@ import xmltodict
 
 class Repox:
     def __init__(self, repox_url: str, username: str, password: str):
+        """Creates a new instance of Repox.
+
+        Args:
+            repox_url (str): The url of your Repox instance.
+            username (str): The username used to connect to the Swagger API.
+            password (str): The password used to connect to the Swagger API.
+
+        """
         self.swagger_endpoint = f"{repox_url}/repox/rest"
         self.username = username
         self.password = password
