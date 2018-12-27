@@ -441,12 +441,40 @@ class Repox:
                             auth=(self.username, self.password)).json()
 
     def get_last_ingest_date_of_set(self, data_set_id: str) -> str:
-        """Returns the last ingestion date of a dataset as a string."""
+        """Get the last time a datset was ingested or updated.
+
+        Returns the last ingestion date of a dataset as a string.
+
+        Args:
+            data_set_id (str): The data_set_id of the dataset you're querying.
+
+        Returns:
+            str: The last ingestion date as a str.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_last_ingest_date_of_set("cmhf_musicaudio")
+            "12/14/2018 08:56:32"
+
+        """
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
                             auth=(self.username, self.password)).json()["result"]
 
     def count_records_in_dataset(self, data_set_id: str) -> str:
-        """Returns the total number of records from a dataset as a string."""
+        """Get the total number of records in a dataset.
+
+        Returns the total number of records from a dataset as a string.
+
+        Args:
+            data_set_id (str): The data_set_id of the dataset you're querying.
+
+        Returns:
+            str: The total number of records in a dataset as a str.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").count_records_in_dataset("cmhf_musicaudio")
+            "7927"
+
+        """
         return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
                             auth=(self.username, self.password)).json()["result"]
 
