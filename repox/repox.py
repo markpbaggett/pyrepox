@@ -38,8 +38,11 @@ class Repox:
     def get_aggregator(self, aggregator_id: str) -> dict:
         """Takes an aggregator id and returns metadata about the aggregator as a dict.
 
-        :param aggregator_id: Specify the aggregator you're looking for by specifying its aggregator_id.
-        :return: a dict of
+        Args:
+            aggregator_id (str): Specify the aggregator you wish to return.
+
+        Returns:
+            dict: A dict of metadata about the specified aggregator.
 
         """
         return requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
@@ -50,11 +53,21 @@ class Repox:
                             auth=(self.username, self.password)).json()
 
     def create_aggregator(self, aggregator_id: str, aggregator_name: str, name_code: str="", homepage: str="") -> int:
-        """Requires an identifier and name of aggregator.  Optionally takes a name_code and a homepage.
-        If name_code is not specified, it's the same string as the aggregator_id. By default, the value of homepage is
-        blank.
+        """Creates an aggregator.
 
-        The HTTP status code is returned as an int.
+        Requires an identifier and a name for the aggregator.  Optionally takes a name_code and a homepage for the new
+        aggregator. If a name_code is not specified, it uses the same string as the aggregator_id. By default, the value
+        of homepage is blank.
+
+        Args:
+            aggregator_id (str): Required. Specify an identifier for the new aggregator.
+            aggregator_name (str): Required. Specify a name for the new aggregator.
+            name_code (str): Optionally include a name_code for the new aggregator.
+            homepage (str): Optionally include a homepage for the new aggregator.
+
+        Returns:
+            int: The HTTP status code based on your request.
+
         """
         if name_code == "":
             name_code = aggregator_id
@@ -67,10 +80,20 @@ class Repox:
 
     def update_aggregator(self, aggregator_id: str, aggregator_name: str="", name_code: str="", homepage: str="") \
             -> int:
-        """Requires an aggregator_id.  Accepts an aggregator_name, name_code, or homepage.  If any of these are not
-        present, the current data is passed.
+        """Update an aggregator.
 
-        Returns an HTTP status code as an int.
+        Update an aggregator by specifying its aggregator_id.  Optionally, pass an aggregator_name, name_code, or
+        homepage.  If any of these are not present, the current data will be used.
+
+        Args:
+            aggregator_id (str): Required. The aggregator_id for the aggregator you want to update.
+            aggregator_name (str): Optionally update the aggregator_name.
+            name_code (str): Optionally update the aggregator's name_code.
+            homepage (str): Optionally update the aggregator's homepage.
+
+        Returns:
+            int: The HTTP status code from your request.
+
         """
         old_data = self.get_aggregator(aggregator_id)
         if aggregator_name == "":
@@ -87,7 +110,17 @@ class Repox:
                             auth=(self.username, self.password), data=json.dumps(aggregator_data)).status_code
 
     def delete_aggregator(self, aggregator_id: str) -> int:
-        """Takes an aggregator id and deletes the corresponding aggregator.  Returns the HTTP status code as an int."""
+        """Delete an aggregator.
+
+        Delete an aggregator by specifying its aggregator_id.
+
+        Args:
+            aggregator_id (str): Required. The aggregator_id of the aggregator you want to delete.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        """
         return requests.delete(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
                                auth=(self.username, self.password)).status_code
 

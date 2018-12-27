@@ -45,7 +45,7 @@ If you are looking for information about a specific method, its parameters, or i
 Search / Index
 --------------
 
-Try here.
+Can't find what you're looking for? Try here.
 
 * :ref:`genindex`
 * :ref:`modindex`
