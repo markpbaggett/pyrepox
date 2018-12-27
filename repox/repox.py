@@ -34,6 +34,13 @@ class Repox:
         Returns:
             list: A list of aggregators.  The list is strings if verbose is False and dicts if it is True.
 
+        Examples:
+            >>> Repox('http://localhost:8080', 'username', 'password').list_all_aggregators(True)
+            "[{'id': 'dltn', 'name': 'Digital Library of Tennessee', 'nameCode': 'dltn',
+            'homepage': 'http://localhost:8080/repox'}]"
+            >>> Repox('http://localhost:8080', 'username', 'password').list_all_aggregators(False)
+            "['dltn']"
+
         """
         if verbose is True:
             return requests.get(f"{self.swagger_endpoint}/aggregators",
