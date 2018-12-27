@@ -312,10 +312,23 @@ class Repox:
                             headers=self.headers, data=json.dumps(metadata)).status_code
 
     def assign_provider_to_new_aggregator(self, provider_id: str, aggregator_id: str) -> int:
-        """Takes a provider_id and an aggegator_id and moves the provider with the provider_id to the aggregator with
-        the aggregator_id.
+        """Assign and existing provider to another aggregator.
 
-        Returns an HTTP status code as an int.
+        Requires a provider_id and an aggegator_id and moves the specified provider to the aggregator with the
+        specified aggregator_id.
+
+        Args:
+            provider_id (str): Required. The provider_id of the provider you want to move.
+            aggregator_id (str): Required. The aggregator_id of the aggregator you want to assign your provider to.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").assign_provider_to_new_aggregator("abcd123",
+            ... "NewDLTNr0")
+            "200"
+
         """
         metadata = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
                                 auth=(self.username, self.password)).json()
@@ -324,18 +337,68 @@ class Repox:
                             headers=self.headers).status_code
 
     def delete_provider(self, provider_id: str) -> int:
-        """Accepts a provider_id and deletes the corresponding provider in Repox.
+        """Delete a provider.
 
-        Returns the HTTP status code as an int.
+        Requires a provider_id and deletes the corresponding provider in Repox.
+
+        Args:
+            provider_id (str): The provider_id of the provider you want to delete.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").delete_provider("abcd123")
+            "200"
+
         """
         return requests.delete(f"{self.swagger_endpoint}/providers/{provider_id}",
                                auth=(self.username, self.password)).status_code
 
     # Sets
     def get_list_of_sets_from_provider(self, provider_id: str, verbose: bool=False) -> list:
-        """Takes a provider id and returns the data sets associated with it. If verbose is true, metadata about each
-        set is included and the list consists of dicts.  If verbose is false, the list consists of dataset ids as
-        strings.
+        """Get list of datasets associated with a provider.
+
+        Requires a provider id and returns the data sets associated with it. If verbose is true, metadata about each
+        set is also included in the response.
+
+        Args:
+            provider_id (str): Required. The provider_id of the provider from which you want sets returned.
+            verbose (bool): Optional. Set to True if you want metadata in your response.  Defaults to False.
+
+        Returns:
+            list: A list of datasets and optionally each's metadata.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_list_of_sets_from_provider("utcr0")
+            "['p16877coll1', 'p16877coll2', 'p16877coll3', 'p16877coll4', 'p16877coll5', 'p16877coll6', 'p16877coll7',
+            'p16877coll8', 'p16877coll9', 'utc_p16877coll10', 'utc_p16877coll11', 'utc_p16877coll12',
+            'utc_p16877coll13', 'utc_p16877coll14', 'utc_p16877coll15', 'utc_p16877coll16', 'utc_p16877coll17',
+            'utc_p16877coll18', 'utc_p16877coll19', 'utc_p16877coll20', 'utc_p16877coll21', 'utc_p16877coll22',
+            'utc_p16877coll23', 'utc_p16877coll24', 'utc_p16877coll25', 'utc_p16877coll26', 'utc_p16877coll27',
+            'utc_p16877coll28']"
+            >>> Repox("http://localhost:8080", "username", "password").get_list_of_sets_from_provider("nashviller0",
+            ... True)
+            "[{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'OAI', 'id': 'nr', 'schema':
+            'http://www.openarchives.org/OAI/2.0/oai_dc.xsd', 'namespace': 'http://www.openarchives.org/OAI/2.0/',
+            'description': "Nashville Public Library's Digital Collections", 'metadataFormat': 'oai_dc', 'isSample':
+            False, 'exportDir': '/vhosts/repoxdata/export/nr', 'oaiSourceURL':
+            'http://nashville.contentdm.oclc.org/oai/oai.php', 'oaiSet': 'nr', 'recordIdPolicy': {'IdProvided': {}}},
+            'nameCode': 'nashvillepublic_nr', 'name': 'Nashville Public Library nr'}, {'containerType': 'DEFAULT',
+            'dataSource': {'dataSetType': 'OAI', 'id': 'p15769coll18', 'schema':
+            'http://www.openarchives.org/OAI/2.0/oai_dc.xsd', 'namespace': 'http://www.openarchives.org/OAI/2.0/',
+            'description': "Nashville's New Faces", 'metadataFormat': 'oai_dc', 'isSample': False, 'exportDir':
+            '/vhosts/repoxdata/export/p15769coll18', 'oaiSourceURL': 'http://nashville.contentdm.oclc.org/oai/oai.php',
+            'oaiSet': 'p15769coll18', 'recordIdPolicy': {'IdProvided': {}}}, 'nameCode': 'nashvillepublic_p15769coll18',
+            'name': 'Nashville Public Library p15769coll18'}, {'containerType': 'DEFAULT', 'dataSource': {'dataSetType':
+            'DIR', 'id': 'nash_p15769coll19', 'schema': 'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd',
+            'namespace': 'http://worldcat.org/xmlschemas/qdc-1.0', 'description': 'Picturing Nashville in Rotogravure,
+            1926-1933', 'metadataFormat': 'oai_qdc', 'isSample': False, 'exportDir':
+            '/vhosts/repoxdata/export/nash_p15769coll19', 'marcFormat': '', 'sourcesDirPath':
+            '/vhosts/repoxdata/nash_p15769coll19', 'recordXPath': 'oai_qdc:qualifieddc', 'isoVariant': 'STANDARD',
+            'recordIdPolicy': {'IdGenerated': {}}, 'retrieveStrategy': {'FOLDER': {}}}, 'nameCode': 'nash_p15769coll19',
+            'name': 'nash_p15769coll19'}]"
+
         """
         if verbose is True:
             return requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
