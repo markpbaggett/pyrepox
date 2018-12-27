@@ -506,8 +506,24 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
                              auth=(self.username, self.password), data=json.dumps(metadata)).status_code
 
-    # This returns a 200 but doesn't seem to work. Could be write permissions?
+    # TODO This returns a 200 even if permissions are wrong. Can we do something about this.
     def export_dataset(self, dataset_id: str) -> int:
+        """Exports a metadata records from a dataset to disk.
+
+        Requires a dataset_id and exports the records associated with it to disk based on the value of its exportDir.
+        Use update_dataset to modify the value of exportDir.
+
+        Args:
+            dataset_id (str): The dataset_id of the dataset you want to export.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").export_dataset()
+            200
+
+        """
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/export", headers=self.headers,
                              auth=(self.username, self.password)).status_code
 
