@@ -860,9 +860,21 @@ class Repox:
                                auth=(self.username, self.password)).status_code
 
     def delete_automatic_harvesting_task(self, dataset_id: str, task_id: str) -> int:
-        """Requires the dataset_id of the set and the task_id related to the scheduled task.
+        """Delete an automatic harvesting task.
 
-        Returns the HTTP status code as an int.
+        Requires the dataset_id of the set and the task_id related to the scheduled task and deletes it.
+
+        Args:
+            dataset_id (str): The dataset_id of the associated dataset.
+            task_id (str): The task_id of the associated task.
+
+        Returns:
+            int: The HTTP status code of a request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").delete_automatic_harvesting_task("nr", "nr_3")
+            200
+
         """
         return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules/{task_id}",
                                auth=(self.username, self.password)).status_code
