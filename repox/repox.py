@@ -736,9 +736,26 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
                             auth=(self.username, self.password)).json()
 
-    # What does a bad result look like?  Should we really return a dict here?
     def get_status_of_harvest(self, dataset_id: str) -> dict:
-        """Requires a dataset_id and returns the status of the list havest as a dict."""
+        """Get status of most recent harvest of a dataset.
+
+        Requires a dataset_id and returns the status of its last harvest.
+
+        Args:
+            dataset_id (str): The dataset_id of the dataset you are queryings.
+
+        Returns:
+            dict: A dict with a key result with the status of the last harvest.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_status_of_harvest("nr")
+            {'result': 'CANCELED'}
+            >>> Repox("http://localhost:8080", "username", "password").get_status_of_harvest("nr")
+            {'result': 'RUNNING'}
+            >>> Repox("http://localhost:8080", "username", "password").get_status_of_harvest("nr")
+            {'result': 'OK'}
+
+        """
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
                             auth=(self.username, self.password)).json()
 
