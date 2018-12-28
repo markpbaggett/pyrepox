@@ -827,7 +827,7 @@ class Repox:
         return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/start?type={harvest_type}",
                              auth=(self.username, self.password)).status_code
 
-    # Need to figure out what the dict needs to look like. This isn't documented.
+    # TODO Figure out what the dict needs to look like. This isn't documented. Create the doctest and convert docstring.
     def schedule_harvest(self, dataset_id: str, metadata: dict, incremental: bool=False) -> int:
         """Requires a dataset_id, metadata about the harvest as a dict, and optionally whether or not
         this is an incremental harvest (defaults to False).
@@ -839,9 +839,22 @@ class Repox:
                              auth=(self.username, self.password)).status_code
 
     def cancel_running_harvest(self, dataset_id: str) -> int:
-        """Requires the dataset_id as a string and cancels the associated harvest if it is running.
+        """Cancel a running harvest.
 
-        Returns the HTTP status code as an int.
+        Requires the dataset_id and cancels the associated harvest if it is running. Returns a 404 if its not running.
+
+        Args:
+            dataset_id (str): The dataset_id of the associated dataset.
+
+        Returns:
+            int: The HTTP status code of the request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").cancel_running_harvest("nr")
+            200
+            >>> Repox("http://localhost:8080", "username", "password").cancel_running_harvest("nr")
+            404
+
         """
         return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/cancel",
                                auth=(self.username, self.password)).status_code
