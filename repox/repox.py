@@ -717,7 +717,22 @@ class Repox:
 
     # Harvests
     def get_scheduled_harvests(self, dataset_id: str) -> list:
-        """Requires a dataset_id and returns a list of scheduled harvests as dicts."""
+        """Get currently scheduled harvests for a give dataset.
+
+        Requires a dataset_id and returns a list of scheduled harvests for that dataset.
+
+        Args:
+            dataset_id (str): The dataset_id of the dataset you are querying.
+
+        Returns:
+            list: A list of scheduled harvests as dicts.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_scheduled_harvests("nr")
+            [{'taskType': 'SCHEDULED', 'id': 'nr_3', 'frequency': 'WEEKLY', 'xmonths': 1, 'time': '23:45',
+            'date': '27/12/2018'}]
+
+        """
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
                             auth=(self.username, self.password)).json()
 
