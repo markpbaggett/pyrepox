@@ -796,18 +796,29 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/log",
                             auth=(self.username, self.password)).json()["result"]
 
-    # This seems to always return a 405 status code:  method not allowed for the requested resource.
+    # TODO This seems to always return a 405 status code: method not allowed for the requested resource. Find out why.
     def get_list_of_running_harvests(self) -> str:
         """Returns a message about currently running harvests."""
         return requests.get(f"{self.swagger_endpoint}/datasets/harvest",
                             auth=(self.username, self.password)).text
 
     def harvest_set(self, dataset_id: str, is_sample: bool=False) -> int:
-        """Requires a dataset_id as a string and optionally accepts an is_sample parameter as a bool.  By default,
-        is_sample is False.  If is_sample is False, the entire set is harvested. If is_sample is True, only a subset
-        of records are harvested.
+        """Harvest a dataset.
 
-        Returns the HTTP status code as an int.
+        Requires a dataset_id and optionally accepts an is_sample parameter and triggers a harvest of the specified
+        dataset.
+
+        Args:
+            dataset_id (str): Required. The dataset_id associated with a dataset.
+            is_sample (bool): Optional. Specify whether to harvest the full set or just a sample.
+
+        Returns:
+            int: The HTTP status code of your request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_status_of_harvest("new_bcpl")
+            200
+
         """
         if is_sample is False:
             harvest_type = "full"
