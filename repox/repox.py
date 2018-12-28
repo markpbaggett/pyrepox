@@ -759,9 +759,40 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
                             auth=(self.username, self.password)).json()
 
-    # This json.loads business everywhere else is ridiculous.  I forgot requests has a json method to handle this.
     def get_log_of_last_harvest(self, dataset_id: str) -> str:
-        """Requires the dataset_id and returns the log of the last ingest as a string of XML."""
+        """Get the log of the last harvest.
+
+        Requires a dataset_id and returns the log of the last ingest as a string of XML.
+
+        Args:
+            dataset_id (str): The dataset_id of the associated dataset.
+
+        Returns:
+            str: The log of the last harvest as a str of XML.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_log_of_last_harvest("new_bcpl")
+            '\n<report> \n  <status>OK</status>  \n  <dataSetId>new_bcpl</dataSetId>  \n  <startTime>2018-12-28 05:00:50
+            </startTime>  \n  <endTime>2018-12-28 05:00:52</endTime>  \n  <duration>00:00:01</duration>  \n  <records>93
+            </records>  \n  <deleted>0</deleted>  \n  <summary> \n    <info time="2018-12-28 05:00:50 UTC"
+            class="pt.utl.ist.oai.OaiDataSource">Starting to import from Data Source with id new_bcpl</info>  \n
+            <info time="2018-12-28 05:00:51 UTC" class="pt.utl.ist.oai.OaiHarvester">Starting OAI Harvest URL:
+            https://dpla.lib.utk.edu/repox/OAIHandler - Set:bcpl</info>  \n    <info time="2018-12-28 05:00:51 UTC"
+            class="pt.utl.ist.oai.OaiHarvester">sourceUrl: https://dpla.lib.utk.edu/repox/OAIHandler, sourceSet: bcpl,
+            outputBaseDir: /data/repoxData/[temp]OAI-PMH_Requests/-bcpl, fromDateString: null, untilDateString: null,
+            metadataFormat: mods</info>  \n    <info time="2018-12-28 05:00:51 UTC" class="pt.utl.ist.oai.OaiHarvester">
+            Harvest finished - number of requests: 1</info>  \n    <info time="2018-12-28 05:00:51 UTC"
+            class="pt.utl.ist.oai.OaiHarvester">Response was an empty list in operation ListRecords (may be invalid set
+            or does not exist new records from the last ingest)</info>  \n    <info time="2018-12-28 05:00:51 UTC"
+            class="pt.utl.ist.oai.OaiHarvester">Finished OAI Harvest URL: https://dpla.lib.utk.edu/repox/OAIHandler -
+            Set:bcpl</info>  \n    <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.ResponseTransformer">
+            Starting to split OAI-PMH request to Record Files</info>  \n    <info time="2018-12-28 05:00:52 UTC"
+            class="pt.utl.ist.oai.ResponseTransformer">Finished splitting OAI-PMH request to List</info>  \n
+            <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.OaiDataSource">Ingest Process ended. Exiting.
+            </info>  \n    <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.OaiDataSource">Finished importing
+            from Data Source with id new_bcpl. Exit status: OK</info> \n  </summary> \n</report>'
+
+        """
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/log",
                             auth=(self.username, self.password)).json()["result"]
 
