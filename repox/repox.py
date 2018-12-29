@@ -759,6 +759,7 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
                             auth=(self.username, self.password)).json()
 
+    # TODO XML as strings in doctests do not display properly in rst.  Fix.
     def get_log_of_last_harvest(self, dataset_id: str) -> str:
         """Get the log of the last harvest.
 
@@ -888,6 +889,7 @@ class Repox:
         return requests.get(f"{self.swagger_endpoint}/records/options",
                             auth=(self.username, self.password)).json()
 
+    # TODO XML as strings in doctests do not display properly in rst.  Fix.
     def get_record(self, record_id: str) -> str:
         """Get a specific record.
 
