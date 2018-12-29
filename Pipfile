@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 xmltodict = "*"
+sphinxcontrib-napoleon = "*"
 
 [dev-packages]
 
