@@ -19,6 +19,12 @@ setup(
         "requests>=2.2.1",
         "xmltodict>=0.11.0"
     ],
+    extras_require={
+        "docs": [
+            'sphinx >= 1.4',
+            "sphinxcontrib-napoleon >= 0.7"
+        ]
+    },
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python :: 3.7",
