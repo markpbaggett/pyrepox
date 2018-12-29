@@ -1,0 +1,15 @@
+# .readthedocs.yml
+
+build:
+  image: latest
+
+python:
+  version: 3.7
+  pip_install: true
+  setup_py_install: true
+  extra_requirements:
+    - docs
+
+formats:
+    - epub
+    - pdf
