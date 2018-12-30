@@ -408,6 +408,27 @@ class Repox:
                                      auth=(self.username, self.password)).json()
             return [data_set["dataSource"]["id"] for data_set in data_sets]
 
+    def count_records_from_provider(self, provider_id: str) -> str:
+        """Counts records from provider.
+
+        Returns the total number of records from a dataset as a string.
+
+        Args:
+             provider_id (str): provider_id of the provider you want details about.
+
+        Returns:
+            int: The number of records from a provider.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").count_records_from_provider("utc")
+            15652
+        """
+        records = 0
+        sets = self.get_list_of_sets_from_provider(provider_id)
+        for dataset in sets:
+            records += int(self.count_records_in_dataset(dataset))
+        return records
+
     def get_dataset_details(self, data_set_id: str) -> dict:
         """Get details about a specific dataset.
 
