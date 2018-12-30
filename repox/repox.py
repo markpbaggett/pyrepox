@@ -16,13 +16,13 @@ class Repox:
         self.swagger_endpoint = f"{repox_url}/repox/rest"
         self.username = username
         self.password = password
-        self.headers = {'content-type': 'application/json'}
+        self.headers = {"content-type": "application/json"}
 
     def __repr__(self):
         return f"Repox connection instance based on {self.swagger_endpoint}."
 
     # Aggregators
-    def list_all_aggregators(self, verbose: bool=False) -> list:
+    def list_all_aggregators(self, verbose: bool = False) -> list:
         """Returns all aggregators and optionally metadata about each.
 
         This method returns all aggregators for this Repox install.  Optionally, you can also retrieve metadata about
@@ -43,11 +43,15 @@ class Repox:
 
         """
         if verbose is True:
-            return requests.get(f"{self.swagger_endpoint}/aggregators",
-                                auth=(self.username, self.password)).json()
+            return requests.get(
+                f"{self.swagger_endpoint}/aggregators",
+                auth=(self.username, self.password),
+            ).json()
         else:
-            aggregators = requests.get(f"{self.swagger_endpoint}/aggregators",
-                                       auth=(self.username, self.password)).json()
+            aggregators = requests.get(
+                f"{self.swagger_endpoint}/aggregators",
+                auth=(self.username, self.password),
+            ).json()
             return [aggregator["id"] for aggregator in aggregators]
 
     def get_aggregator(self, aggregator_id: str) -> dict:
@@ -64,14 +68,24 @@ class Repox:
             {'id': 'dltn', 'name': 'DLTN Test', 'nameCode': 'dltn', 'homepage': 'http://localhost:8080/repox'}
 
         """
-        return requests.get(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
+            auth=(self.username, self.password),
+        ).json()
 
     def get_aggregator_options(self) -> dict:
-        return requests.get(f"{self.swagger_endpoint}/aggregators/options",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/aggregators/options",
+            auth=(self.username, self.password),
+        ).json()
 
-    def create_aggregator(self, aggregator_id: str, aggregator_name: str, name_code: str="", homepage: str="") -> int:
+    def create_aggregator(
+        self,
+        aggregator_id: str,
+        aggregator_name: str,
+        name_code: str = "",
+        homepage: str = "",
+    ) -> int:
         """Creates an aggregator.
 
         Requires an identifier and a name for the aggregator.  Optionally takes a name_code and a homepage for the new
@@ -94,15 +108,26 @@ class Repox:
         """
         if name_code == "":
             name_code = aggregator_id
-        aggregator_data = {"id": aggregator_id,
-                           "name": aggregator_name,
-                           "nameCode": name_code,
-                           "homepage": homepage}
-        return requests.post(f"{self.swagger_endpoint}/aggregators", auth=(self.username, self.password),
-                             headers=self.headers, data=json.dumps(aggregator_data)).status_code
+        aggregator_data = {
+            "id": aggregator_id,
+            "name": aggregator_name,
+            "nameCode": name_code,
+            "homepage": homepage,
+        }
+        return requests.post(
+            f"{self.swagger_endpoint}/aggregators",
+            auth=(self.username, self.password),
+            headers=self.headers,
+            data=json.dumps(aggregator_data),
+        ).status_code
 
-    def update_aggregator(self, aggregator_id: str, aggregator_name: str="", name_code: str="", homepage: str="") \
-            -> int:
+    def update_aggregator(
+        self,
+        aggregator_id: str,
+        aggregator_name: str = "",
+        name_code: str = "",
+        homepage: str = "",
+    ) -> int:
         """Update an aggregator.
 
         Update an aggregator by specifying its aggregator_id.  Optionally, pass an aggregator_name, name_code, or
@@ -130,12 +155,18 @@ class Repox:
             name_code = old_data["nameCode"]
         if homepage == "":
             homepage == old_data["homepage"]
-        aggregator_data = {"id": aggregator_id,
-                           "name": aggregator_name,
-                           "nameCode": name_code,
-                           "homepage": homepage}
-        return requests.put(f"{self.swagger_endpoint}/aggregators/{aggregator_id}", headers=self.headers,
-                            auth=(self.username, self.password), data=json.dumps(aggregator_data)).status_code
+        aggregator_data = {
+            "id": aggregator_id,
+            "name": aggregator_name,
+            "nameCode": name_code,
+            "homepage": homepage,
+        }
+        return requests.put(
+            f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
+            headers=self.headers,
+            auth=(self.username, self.password),
+            data=json.dumps(aggregator_data),
+        ).status_code
 
     def delete_aggregator(self, aggregator_id: str) -> int:
         """Delete an aggregator.
@@ -153,11 +184,13 @@ class Repox:
             200
 
         """
-        return requests.delete(f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
-                               auth=(self.username, self.password)).status_code
+        return requests.delete(
+            f"{self.swagger_endpoint}/aggregators/{aggregator_id}",
+            auth=(self.username, self.password),
+        ).status_code
 
     # Providers
-    def get_list_of_providers(self, aggregator_id: str, verbose: bool=False) -> list:
+    def get_list_of_providers(self, aggregator_id: str, verbose: bool = False) -> list:
         """Get a list of providers and its metadata for a specific aggregator.
 
         Requires an aggregator id and returns the providers that belong to it as a list. Optionally, you can also
@@ -196,11 +229,15 @@ class Repox:
 
         """
         if verbose is True:
-            return requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
-                                auth=(self.username, self.password)).json()
+            return requests.get(
+                f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
+                auth=(self.username, self.password),
+            ).json()
         else:
-            providers = requests.get(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
-                                     auth=(self.username, self.password)).json()
+            providers = requests.get(
+                f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
+                auth=(self.username, self.password),
+            ).json()
             return [provider["id"] for provider in providers]
 
     def get_provider(self, provider_id: str) -> dict:
@@ -220,8 +257,10 @@ class Repox:
               'nameCode': '', 'homepage': '', 'providerType': 'LIBRARY', 'email': ''}
 
         """
-        return requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/providers/{provider_id}",
+            auth=(self.username, self.password),
+        ).json()
 
     # TODO Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
     # TODO Describe the required parts of a metadata dict.
@@ -245,14 +284,27 @@ class Repox:
             201
 
         """
-        return requests.post(f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}", headers=self.headers,
-                             auth=(self.username, self.password), data=json.dumps(metadata)).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/providers?aggregatorId={aggregator_id}",
+            headers=self.headers,
+            auth=(self.username, self.password),
+            data=json.dumps(metadata),
+        ).status_code
 
     # TODO Determine if there is a list of allowed country codes.
     # TODO Determine if there is an exhaustive list of provider_types.
-    def update_provider(self, provider_id: str, name: str="", country: str="", country_code: str="",
-                        description: str="", name_code: str="", homepage: str="", provider_type: str="",
-                        email: str="") -> int:
+    def update_provider(
+        self,
+        provider_id: str,
+        name: str = "",
+        country: str = "",
+        country_code: str = "",
+        description: str = "",
+        name_code: str = "",
+        homepage: str = "",
+        provider_type: str = "",
+        email: str = "",
+    ) -> int:
         """Update the metadata about a provider.
 
         Requires a provider_id as a string and optionally any metadata value for any other field you want to modify.
@@ -278,8 +330,10 @@ class Repox:
             200
 
         """
-        old_data = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
-                                auth=(self.username, self.password)).json()
+        old_data = requests.get(
+            f"{self.swagger_endpoint}/providers/{provider_id}",
+            auth=(self.username, self.password),
+        ).json()
         if name == "":
             name = old_data["name"]
         if country == "":
@@ -299,19 +353,27 @@ class Repox:
             provider_type = old_data["providerType"]
         if email == "":
             email = old_data["email"]
-        metadata = {"id": provider_id,
-                    "name": name,
-                    "country": country,
-                    "countryCode": country_code,
-                    "description": description,
-                    "nameCode": name_code,
-                    "homepage": homepage,
-                    "providerType": provider_type,
-                    "email": email}
-        return requests.put(f"{self.swagger_endpoint}/providers/{provider_id}", auth=(self.username, self.password),
-                            headers=self.headers, data=json.dumps(metadata)).status_code
+        metadata = {
+            "id": provider_id,
+            "name": name,
+            "country": country,
+            "countryCode": country_code,
+            "description": description,
+            "nameCode": name_code,
+            "homepage": homepage,
+            "providerType": provider_type,
+            "email": email,
+        }
+        return requests.put(
+            f"{self.swagger_endpoint}/providers/{provider_id}",
+            auth=(self.username, self.password),
+            headers=self.headers,
+            data=json.dumps(metadata),
+        ).status_code
 
-    def assign_provider_to_new_aggregator(self, provider_id: str, aggregator_id: str) -> int:
+    def assign_provider_to_new_aggregator(
+        self, provider_id: str, aggregator_id: str
+    ) -> int:
         """Assign and existing provider to another aggregator.
 
         Requires a provider_id and an aggegator_id and moves the specified provider to the aggregator with the
@@ -330,11 +392,16 @@ class Repox:
             200
 
         """
-        metadata = requests.get(f"{self.swagger_endpoint}/providers/{provider_id}",
-                                auth=(self.username, self.password)).json()
-        return requests.put(f"{self.swagger_endpoint}/providers/{provider_id}?newAggregatorId={aggregator_id}",
-                            auth=(self.username, self.password), data=json.dumps(metadata),
-                            headers=self.headers).status_code
+        metadata = requests.get(
+            f"{self.swagger_endpoint}/providers/{provider_id}",
+            auth=(self.username, self.password),
+        ).json()
+        return requests.put(
+            f"{self.swagger_endpoint}/providers/{provider_id}?newAggregatorId={aggregator_id}",
+            auth=(self.username, self.password),
+            data=json.dumps(metadata),
+            headers=self.headers,
+        ).status_code
 
     def delete_provider(self, provider_id: str) -> int:
         """Delete a provider.
@@ -352,11 +419,15 @@ class Repox:
             200
 
         """
-        return requests.delete(f"{self.swagger_endpoint}/providers/{provider_id}",
-                               auth=(self.username, self.password)).status_code
+        return requests.delete(
+            f"{self.swagger_endpoint}/providers/{provider_id}",
+            auth=(self.username, self.password),
+        ).status_code
 
     # Sets
-    def get_list_of_sets_from_provider(self, provider_id: str, verbose: bool=False) -> list:
+    def get_list_of_sets_from_provider(
+        self, provider_id: str, verbose: bool = False
+    ) -> list:
         """Get list of datasets associated with a provider.
 
         Requires a provider id and returns the data sets associated with it. If verbose is true, metadata about each
@@ -401,11 +472,15 @@ class Repox:
 
         """
         if verbose is True:
-            return requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
-                                auth=(self.username, self.password)).json()
+            return requests.get(
+                f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+                auth=(self.username, self.password),
+            ).json()
         else:
-            data_sets = requests.get(f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
-                                     auth=(self.username, self.password)).json()
+            data_sets = requests.get(
+                f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+                auth=(self.username, self.password),
+            ).json()
             return [data_set["dataSource"]["id"] for data_set in data_sets]
 
     def count_records_from_provider(self, provider_id: str) -> int:
@@ -458,8 +533,10 @@ class Repox:
             'name': 'cmhf_musicaudio'}
 
         """
-        return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/{data_set_id}",
+            auth=(self.username, self.password),
+        ).json()
 
     def get_last_ingest_date_of_set(self, data_set_id: str) -> str:
         """Get the last time a datset was ingested or updated.
@@ -477,8 +554,10 @@ class Repox:
             "12/14/2018 08:56:32"
 
         """
-        return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
-                            auth=(self.username, self.password)).json()["result"]
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/{data_set_id}/date",
+            auth=(self.username, self.password),
+        ).json()["result"]
 
     def count_records_in_dataset(self, data_set_id: str) -> str:
         """Get the total number of records in a dataset.
@@ -496,8 +575,10 @@ class Repox:
             "7927"
 
         """
-        return requests.get(f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
-                            auth=(self.username, self.password)).json()["result"]
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
+            auth=(self.username, self.password),
+        ).json()["result"]
 
     # TODO Determine which keys are required and which are not and write something to help with unpacking this.
     def create_dataset(self, provider_id: str, metadata: dict) -> int:
@@ -524,8 +605,12 @@ class Repox:
             201
 
         """
-        return requests.post(f"{self.swagger_endpoint}/datasets?providerId={provider_id}", headers=self.headers,
-                             auth=(self.username, self.password), data=json.dumps(metadata)).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+            headers=self.headers,
+            auth=(self.username, self.password),
+            data=json.dumps(metadata),
+        ).status_code
 
     # TODO This returns a 200 even if permissions are wrong. Can we do something about this.
     def export_dataset(self, dataset_id: str) -> int:
@@ -545,8 +630,11 @@ class Repox:
             200
 
         """
-        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/export", headers=self.headers,
-                             auth=(self.username, self.password)).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/export",
+            headers=self.headers,
+            auth=(self.username, self.password),
+        ).status_code
 
     def copy_dataset(self, dataset_id: str, new_dataset_id: str) -> int:
         """Make a copy of an existing dataset with a new id.
@@ -567,13 +655,25 @@ class Repox:
             201
 
         """
-        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}?newDatasetId={new_dataset_id}",
-                             headers=self.headers, auth=(self.username, self.password)).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}?newDatasetId={new_dataset_id}",
+            headers=self.headers,
+            auth=(self.username, self.password),
+        ).status_code
 
     # TODO Create similar update methods for other dataset types.
-    def update_oai_dataset(self, dataset_id: str, export_dir: str="", metadata_format: str="", description: str="",
-                           is_sample: bool=False, oai_url: str="", set_name: str="", name: str="", name_code: str="") \
-            -> int:
+    def update_oai_dataset(
+        self,
+        dataset_id: str,
+        export_dir: str = "",
+        metadata_format: str = "",
+        description: str = "",
+        is_sample: bool = False,
+        oai_url: str = "",
+        set_name: str = "",
+        name: str = "",
+        name_code: str = "",
+    ) -> int:
         """Update an existing oai dataset.
 
         Requires a dataset_id and optionally accepts most metadata elements for an OAI dataset as a str.  If a metadata
@@ -600,8 +700,13 @@ class Repox:
 
         """
         old_data = self.get_dataset_details(dataset_id)
-        data_source_data = {"exportDir": export_dir, "description": description, "oaiSourceURL": oai_url,
-                            "isSample": is_sample, "oaiSet": set_name}
+        data_source_data = {
+            "exportDir": export_dir,
+            "description": description,
+            "oaiSourceURL": oai_url,
+            "isSample": is_sample,
+            "oaiSet": set_name,
+        }
         if metadata_format != "":
             format_data = self.__metadata_helper(metadata_format)
             if format_data["result"]["schema"] != "":
@@ -615,8 +720,12 @@ class Repox:
             old_data["name"] = name
         if name_code != "":
             old_data["nameCode"] = name_code
-        return requests.put(f"{self.swagger_endpoint}/datasets/{dataset_id}", headers=self.headers,
-                            auth=(self.username, self.password), data=json.dumps(old_data)).status_code
+        return requests.put(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}",
+            headers=self.headers,
+            auth=(self.username, self.password),
+            data=json.dumps(old_data),
+        ).status_code
 
     def delete_dataset(self, dataset_id: str) -> int:
         """Delete a dataset.
@@ -634,8 +743,10 @@ class Repox:
             200
 
         """
-        return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}",
-                               auth=(self.username, self.password)).status_code
+        return requests.delete(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}",
+            auth=(self.username, self.password),
+        ).status_code
 
     @staticmethod
     def __metadata_helper(metadata_format: str) -> dict:
@@ -651,61 +762,50 @@ class Repox:
 
         """
         formats = {
-            "edm":
-                {
-                    "schema": "http://www.europeana.eu/schemas/edm/EDM.xsd",
-                    "namespace": "http://www.europeana.eu/schemas/edm/",
-                },
-            "ese":
-                {
-                    "schema": "http://www.europeana.eu/schemas/ese/ESE-V3.4.xsd",
-                    "namespace": "http://www.europeana.eu/schemas/ese/"
-                },
-            "ISO2709":
-                {
-                    "schmea": "info:lc/xmlns/marcxchange-v1.xsd",
-                    "namespace": "info:lc/xmlns/marcxchange-v1"
-                },
-            "lido":
-                {
-                    "schema": "http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd",
-                    "namespace": "http://www.lido-schema.org",
-                },
-            "MarcXchange":
-                {
-                    "namespace": "info:lc/xmlns/marcxchange-v1",
-                    "schema": "info:lc/xmlns/marcxchange-v1.xsd"
-                },
-            "mods":
-                {
-                    "schema": 'http://www.loc.gov/standards/mods/v3/mods-3-5.xsd',
-                    "namespace": 'http://www.loc.gov/mods/v3'
-                },
-            "NLM-AI":
-                {
-                    "schema": "ncbi-mathml2/mathml2.xsd",
-                    "namespace": "http://www.w3.org/1998/Math/MathML"
-                },
-            "NLM-Book":
-                {
-                    "namespace": "http://www.w3.org/1998/Math/MathML",
-                    "schema": "ncbi-mathml2/mathml2.xsd",
-                },
-            "oai_dc":
-                {
-                    "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-                    "namespace": 'http://www.openarchives.org/OAI/2.0/'
-                },
-            "oai_qdc":
-                {
-                    "schema": "http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd",
-                    "namespace": "http://worldcat.org/xmlschemas/qdc-1.0"
-                },
-            "tel":
-                {
-                    "schema": "http://www.europeana.eu/schemas/ese/ESE-V3.4.xsd",
-                    "namespace": "http://krait.kb.nl/coop/tel/handbook/telterms.html"
-                }
+            "edm": {
+                "schema": "http://www.europeana.eu/schemas/edm/EDM.xsd",
+                "namespace": "http://www.europeana.eu/schemas/edm/",
+            },
+            "ese": {
+                "schema": "http://www.europeana.eu/schemas/ese/ESE-V3.4.xsd",
+                "namespace": "http://www.europeana.eu/schemas/ese/",
+            },
+            "ISO2709": {
+                "schmea": "info:lc/xmlns/marcxchange-v1.xsd",
+                "namespace": "info:lc/xmlns/marcxchange-v1",
+            },
+            "lido": {
+                "schema": "http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd",
+                "namespace": "http://www.lido-schema.org",
+            },
+            "MarcXchange": {
+                "namespace": "info:lc/xmlns/marcxchange-v1",
+                "schema": "info:lc/xmlns/marcxchange-v1.xsd",
+            },
+            "mods": {
+                "schema": "http://www.loc.gov/standards/mods/v3/mods-3-5.xsd",
+                "namespace": "http://www.loc.gov/mods/v3",
+            },
+            "NLM-AI": {
+                "schema": "ncbi-mathml2/mathml2.xsd",
+                "namespace": "http://www.w3.org/1998/Math/MathML",
+            },
+            "NLM-Book": {
+                "namespace": "http://www.w3.org/1998/Math/MathML",
+                "schema": "ncbi-mathml2/mathml2.xsd",
+            },
+            "oai_dc": {
+                "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+                "namespace": "http://www.openarchives.org/OAI/2.0/",
+            },
+            "oai_qdc": {
+                "schema": "http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd",
+                "namespace": "http://worldcat.org/xmlschemas/qdc-1.0",
+            },
+            "tel": {
+                "schema": "http://www.europeana.eu/schemas/ese/ESE-V3.4.xsd",
+                "namespace": "http://krait.kb.nl/coop/tel/handbook/telterms.html",
+            },
         }
         current_format = metadata_format.lower()
         try:
@@ -732,8 +832,9 @@ class Repox:
             "al", "records": "100853"}, {"@country": "de", "records": "115785"}]}, "recordsTotal": "216638"}}'
 
         """
-        data = requests.get(f"{self.swagger_endpoint}/statistics",
-                            auth=(self.username, self.password)).json()
+        data = requests.get(
+            f"{self.swagger_endpoint}/statistics", auth=(self.username, self.password)
+        ).json()
         return json.dumps(xmltodict.parse(data["result"]))
 
     # Harvests
@@ -754,8 +855,10 @@ class Repox:
             'date': '27/12/2018'}]
 
         """
-        return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules",
+            auth=(self.username, self.password),
+        ).json()
 
     def get_status_of_harvest(self, dataset_id: str) -> dict:
         """Get status of most recent harvest of a dataset.
@@ -777,8 +880,10 @@ class Repox:
             {'result': 'OK'}
 
         """
-        return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/status",
+            auth=(self.username, self.password),
+        ).json()
 
     # TODO XML as strings in doctests do not display properly in rst.  Fix.
     def get_log_of_last_harvest(self, dataset_id: str) -> str:
@@ -815,16 +920,20 @@ class Repox:
             from Data Source with id new_bcpl. Exit status: OK</info> \n  </summary> \n</report>'
 
         """
-        return requests.get(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/log",
-                            auth=(self.username, self.password)).json()["result"]
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/log",
+            auth=(self.username, self.password),
+        ).json()["result"]
 
     # TODO This seems to always return a 405 status code: method not allowed for the requested resource. Find out why.
     def get_list_of_running_harvests(self) -> str:
         """Returns a message about currently running harvests."""
-        return requests.get(f"{self.swagger_endpoint}/datasets/harvest",
-                            auth=(self.username, self.password)).text
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/harvest",
+            auth=(self.username, self.password),
+        ).text
 
-    def harvest_set(self, dataset_id: str, is_sample: bool=False) -> int:
+    def harvest_set(self, dataset_id: str, is_sample: bool = False) -> int:
         """Harvest a dataset.
 
         Requires a dataset_id and optionally accepts an is_sample parameter and triggers a harvest of the specified
@@ -846,19 +955,27 @@ class Repox:
             harvest_type = "full"
         else:
             harvest_type = "sample"
-        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/start?type={harvest_type}",
-                             auth=(self.username, self.password)).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/start?type={harvest_type}",
+            auth=(self.username, self.password),
+        ).status_code
 
     # TODO Figure out what the dict needs to look like. This isn't documented. Create the doctest and convert docstring.
-    def schedule_harvest(self, dataset_id: str, metadata: dict, incremental: bool=False) -> int:
+    def schedule_harvest(
+        self, dataset_id: str, metadata: dict, incremental: bool = False
+    ) -> int:
         """Requires a dataset_id, metadata about the harvest as a dict, and optionally whether or not
         this is an incremental harvest (defaults to False).
 
         Returns the HTTP status code as an int.
         """
-        return requests.post(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedule?incremental="
-                             f"{str(incremental).lower()}", headers=self.headers, data=json.dumps(metadata),
-                             auth=(self.username, self.password)).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedule?incremental="
+            f"{str(incremental).lower()}",
+            headers=self.headers,
+            data=json.dumps(metadata),
+            auth=(self.username, self.password),
+        ).status_code
 
     def cancel_running_harvest(self, dataset_id: str) -> int:
         """Cancel a running harvest.
@@ -878,8 +995,10 @@ class Repox:
             404
 
         """
-        return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/cancel",
-                               auth=(self.username, self.password)).status_code
+        return requests.delete(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/cancel",
+            auth=(self.username, self.password),
+        ).status_code
 
     def delete_automatic_harvesting_task(self, dataset_id: str, task_id: str) -> int:
         """Delete an automatic harvesting task.
@@ -898,17 +1017,23 @@ class Repox:
             200
 
         """
-        return requests.delete(f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules/{task_id}",
-                               auth=(self.username, self.password)).status_code
+        return requests.delete(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedules/{task_id}",
+            auth=(self.username, self.password),
+        ).status_code
 
     # Mappings
     def get_options_for_mappings(self) -> dict:
-        return requests.get(f"{self.swagger_endpoint}/mappings/options",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/mappings/options",
+            auth=(self.username, self.password),
+        ).json()
 
     def get_options_for_records(self) -> dict:
-        return requests.get(f"{self.swagger_endpoint}/records/options",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/records/options",
+            auth=(self.username, self.password),
+        ).json()
 
     # TODO XML as strings in doctests do not display properly in rst.  Fix.
     def get_record(self, record_id: str) -> str:
@@ -967,28 +1092,39 @@ class Repox:
 
         """
         try:
-            return requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}",
-                                auth=(self.username, self.password)).json()["result"]
+            return requests.get(
+                f"{self.swagger_endpoint}/records?recordId={record_id}",
+                auth=(self.username, self.password),
+            ).json()["result"]
         except json.decoder.JSONDecodeError:
-            return "REPOX Error: This is a generic error and is thrown when Repox can't find a matching metadata.  " \
-                   "This can be caused by an OAI record with the status of deleted."
+            return (
+                "REPOX Error: This is a generic error and is thrown when Repox can't find a matching metadata.  "
+                "This can be caused by an OAI record with the status of deleted."
+            )
 
     # TODO While this returns a 200, it does not seem to do anything.  Post an issue in Repox GitHub repo.
     def delete_record(self, record_id: str) -> int:
         """Accepts a record id and deletes the corresponding record.  Returns the HTTP status code as an int."""
-        return requests.get(f"{self.swagger_endpoint}/records?recordId={record_id}&type=delete",
-                            auth=(self.username, self.password)).status_code
+        return requests.get(
+            f"{self.swagger_endpoint}/records?recordId={record_id}&type=delete",
+            auth=(self.username, self.password),
+        ).status_code
 
     # TODO Need to test
     def add_a_record(self, dataset_id: str, record_id: str, xml_record: str) -> int:
-        return requests.post(f"{self.swagger_endpoint}/records?datasetId={dataset_id}&recordId={record_id}",
-                             auth=(self.username, self.password), headers="application/xml",
-                             data=xml_record).status_code
+        return requests.post(
+            f"{self.swagger_endpoint}/records?datasetId={dataset_id}&recordId={record_id}",
+            auth=(self.username, self.password),
+            headers="application/xml",
+            data=xml_record,
+        ).status_code
 
     def get_mapping_details(self, mapping_id) -> dict:
         """Returns metadata about a mapping as a dict."""
-        return requests.get(f"{self.swagger_endpoint}/mappings/{mapping_id}",
-                            auth=(self.username, self.password)).json()
+        return requests.get(
+            f"{self.swagger_endpoint}/mappings/{mapping_id}",
+            auth=(self.username, self.password),
+        ).json()
 
     # TODO.
     def add_mapping(self):
