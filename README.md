@@ -1,6 +1,7 @@
 # Pyrepox: Repox for Humans
 
-![Travis icons](https://travis-ci.org/markpbaggett/pyrepox.png)
+![Travis icon](https://travis-ci.org/markpbaggett/pyrepox.png)
+![readthedocs icon](https://readthedocs.org/projects/pyrepox/badge/?version=latest)
 
 Pyrepox is a lightweight [Repox](https://github.com/europeana/REPOX)
 client written in Python. It is designed to make reading, writing,
@@ -21,9 +22,10 @@ possible.
 
 ## Installation
 
+```
+$ pip install repox
+```
 
+## Documentation
 
-## Dependencies
-
-* requests
-* xmltodict
+Documentation available at [https://pyrepox.readthedocs.io/en/latest/](https://pyrepox.readthedocs.io/en/latest/).
