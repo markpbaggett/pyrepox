@@ -74,6 +74,29 @@ class Repox:
         ).json()
 
     def get_aggregator_options(self) -> dict:
+        """Get details from Repox Swagger about all the Aggregator APIs.
+
+        This is a direct implementation of an API from Repox.
+
+        Returns:
+            dict: Details about the Aggregator Options.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_aggregator_options()
+            {'option': [{'description': '[OPTIONS]Get options over Aggregators.', 'syntax':
+            'http://localhost:8080/repox/rest/aggregators'}, {'description': '[GET]Get options over Aggregators.',
+            'syntax': 'http://localhost:8080/repox/rest/aggregators/options'}, {'description':
+            '[GET]Gets an Aggregator by Id.', 'syntax': 'http://localhost:8080/repox/rest/aggregators/{aggregatorId}'},
+            {'description': '[POST]Create an aggregator provided in the body of the post call.', 'syntax':
+            'http://localhost:8080/repox/rest/aggregators'}, {'description':
+            '[DELETE]Delete an aggregator by specifying the Id.', 'syntax':
+            'http://localhost:8080/repox/rest/aggregators/{aggregatorId}'}, {'description':
+            '[PUT]Update an aggregator by specifying the Id on the context path.', 'syntax':
+            'http://localhost:8080/repox/rest/aggregators/{aggregatorId}'}, {'description':
+            '[GET]Get a list of aggregators by specifying a range.', 'syntax':
+            'http://localhost:8080/repox/rest/aggregators', 'queryParameter': ['offset', 'number']}]}
+
+        """
         return requests.get(
             f"{self.swagger_endpoint}/aggregators/options",
             auth=(self.username, self.password),
@@ -190,7 +213,9 @@ class Repox:
         ).status_code
 
     # Providers
-    def get_list_of_providers(self, aggregator_id: str, verbose: bool = False) -> list:
+    def get_list_of_providers(
+        self, aggregator_id: str, verbose: bool = False
+    ) -> list:
         """Get a list of providers and its metadata for a specific aggregator.
 
         Requires an aggregator id and returns the providers that belong to it as a list. Optionally, you can also
@@ -711,7 +736,9 @@ class Repox:
             format_data = self.__metadata_helper(metadata_format)
             if format_data["result"]["schema"] != "":
                 data_source_data["schema"] = format_data["result"]["schema"]
-                data_source_data["namespace"] = format_data["result"]["namespace"]
+                data_source_data["namespace"] = format_data["result"][
+                    "namespace"
+                ]
                 data_source_data["metadataFormat"] = metadata_format
         for k, v in data_source_data.items():
             if v != "":
@@ -833,7 +860,8 @@ class Repox:
 
         """
         data = requests.get(
-            f"{self.swagger_endpoint}/statistics", auth=(self.username, self.password)
+            f"{self.swagger_endpoint}/statistics",
+            auth=(self.username, self.password),
         ).json()
         return json.dumps(xmltodict.parse(data["result"]))
 
@@ -1000,7 +1028,9 @@ class Repox:
             auth=(self.username, self.password),
         ).status_code
 
-    def delete_automatic_harvesting_task(self, dataset_id: str, task_id: str) -> int:
+    def delete_automatic_harvesting_task(
+        self, dataset_id: str, task_id: str
+    ) -> int:
         """Delete an automatic harvesting task.
 
         Requires the dataset_id of the set and the task_id related to the scheduled task and deletes it.
@@ -1111,7 +1141,9 @@ class Repox:
         ).status_code
 
     # TODO Need to test
-    def add_a_record(self, dataset_id: str, record_id: str, xml_record: str) -> int:
+    def add_a_record(
+        self, dataset_id: str, record_id: str, xml_record: str
+    ) -> int:
         return requests.post(
             f"{self.swagger_endpoint}/records?datasetId={dataset_id}&recordId={record_id}",
             auth=(self.username, self.password),
