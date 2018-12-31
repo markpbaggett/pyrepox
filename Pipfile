@@ -6,10 +6,11 @@ name = "pypi"
 [packages]
 requests = "*"
 xmltodict = "*"
-sphinxcontrib-napoleon = "*"
-sphinx = "*"
 
 [dev-packages]
+pre-commit = "*"
+sphinx = "*"
+sphinxcontrib-napoleon = "*"
 
 [requires]
 python_version = "3.7"
