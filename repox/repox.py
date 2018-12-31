@@ -1079,6 +1079,25 @@ class Repox:
         ).json()
 
     def get_options_for_records(self) -> dict:
+        """Get details from Repox Swagger about all the Records APIS.
+
+        This is a direct implementation of an API from Repox.
+
+        Returns:
+            dict:  Details about Records APIs.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_options_for_records()
+            {'option': [{'description': '[OPTIONS]Get options over Records.', 'syntax':
+            'http://localhost:8080/repox/rest/records'}, {'description': '[GET]Get options over Records.', 'syntax':
+            'http://localhost:8080/repox/rest/records/options'}, {'description':
+            '[GET]Retrieve the record with the provided id.', 'syntax': 'http://localhost:8080/repox/rest/records',
+            'queryParameter': ['recordId']}, {'description': '[DELETE]Deletes (mark) or permanently erase a record.',
+            'syntax': 'http://localhost:8080/repox/rest/records', 'queryParameter': ['recordId', 'type']},
+            {'description': '[POST]Create a new record.', 'syntax': 'http://localhost:8080/repox/rest/records',
+            'queryParameter': ['datasetId', 'recordId']}]}
+
+        """
         return requests.get(
             f"{self.swagger_endpoint}/records/options",
             auth=(self.username, self.password),
