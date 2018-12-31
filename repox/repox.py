@@ -1119,8 +1119,24 @@ class Repox:
             data=xml_record,
         ).status_code
 
-    def get_mapping_details(self, mapping_id) -> dict:
-        """Returns metadata about a mapping as a dict."""
+    def get_mapping_details(self, mapping_id: str) -> dict:
+        """Returns metadata about a mapping as a dict.
+
+        Requires the mapping_id of a mapping and returns metadata about it as a dict.
+
+        Args:
+            mapping_id (str): The mapping_id of a mapping.
+
+        Returns:
+            dict:  Metadata about the mapping.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_mapping_details("UTKMODSrepaired")
+            {'id': 'UTKMODSrepaired', 'description': 'UTK MODS modified for DLTN MODS', 'sourceSchemaId': 'oai_mods',
+            'destinationSchemaId': 'MODS', 'stylesheet': 'utkmodstomods.xsl', 'sourceSchemaVersion': '3.5',
+            'versionTwo': True}
+
+        """
         return requests.get(
             f"{self.swagger_endpoint}/mappings/{mapping_id}",
             auth=(self.username, self.password),
