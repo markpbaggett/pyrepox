@@ -508,6 +508,40 @@ class Repox:
             ).json()
             return [data_set["dataSource"]["id"] for data_set in data_sets]
 
+    def get_list_of_sets_from_provider_by_format(
+        self, provider_id: str
+    ) -> list:
+        """Gets a list of sets with the metadata format.
+
+        Requires a provider_id and returns dicts with the id of the set and its format.
+
+        Args:
+            provider_id (str): The provider_id of a provider.
+
+        Returns:
+            list: A list of provider_ids and formats as dicts.
+
+        Example:
+            >>> Repox("http://localhost:8080", "username", "password").get_list_of_sets_from_provider_by_format(
+            ... "KnoxPLr0")
+            [{'name': 'p15136coll1', 'format': 'oai_dc'}, {'name': 'p15136coll2', 'format': 'oai_dc'}, {'name':
+            'p16311coll1', 'format': 'oai_dc'}, {'name': 'p16311coll2', 'format': 'oai_dc'}, {'name': 'p265301coll005',
+            'format': 'oai_dc'}, {'name': 'p265301coll7', 'format': 'oai_dc'}, {'name': 'p265301coll9', 'format':
+            'oai_dc'}]
+
+        """
+        r = requests.get(
+            f"{self.swagger_endpoint}/datasets?providerId={provider_id}",
+            auth=(self.username, self.password),
+        ).json()
+        return [
+            {
+                "name": oai_set["dataSource"]["id"],
+                "format": oai_set["dataSource"]["metadataFormat"],
+            }
+            for oai_set in r
+        ]
+
     def count_records_from_provider(self, provider_id: str) -> int:
         """Counts records from provider.
 
@@ -1054,7 +1088,7 @@ class Repox:
 
     # Mappings
     def get_options_for_mappings(self) -> dict:
-        """Get details from Repox Swagger about all the Mappings APIS.
+        """Get details from Repox Swagger about all the Mappings APIs.
 
         This is a direct implementation of an API from Repox.
 
@@ -1079,7 +1113,7 @@ class Repox:
         ).json()
 
     def get_options_for_records(self) -> dict:
-        """Get details from Repox Swagger about all the Records APIS.
+        """Get details from Repox Swagger about all the Records APIs.
 
         This is a direct implementation of an API from Repox.
 
@@ -1213,7 +1247,7 @@ class Repox:
         ).json()
 
     # TODO.
-    def add_mapping(self):
+    def add_mapping(self, metadata: dict) -> int:
         """
         {
         'id': 'UTKMODSrepaired',
@@ -1226,4 +1260,9 @@ class Repox:
 
         :return:
         """
-        return
+        return requests.post(
+            f"{self.swagger_endpoint}/mappings",
+            auth=(self.username, self.password),
+            headers="application/xml",
+            data=metadata,
+        ).status_code
