@@ -1054,6 +1054,25 @@ class Repox:
 
     # Mappings
     def get_options_for_mappings(self) -> dict:
+        """Get details from Repox Swagger about all the Mappings APIS.
+
+        This is a direct implementation of an API from Repox.
+
+        Returns:
+            dict:  Details about Mappings APIs.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_options_for_mappings()
+            {'option': [{'description': '[OPTIONS]Get options over mappings.', 'syntax':
+            'http://localhost:8080/repox/rest/mappings'}, {'description': '[GET]Get options over mappings.', 'syntax':
+            'http://localhost:8080/repox/rest/mappings/options'}, {'description':
+            '[POST]Create a new mapping - XSL file through HTTP POST.', 'syntax':
+            'http://localhost:8080/repox/rest/mappings'}, {'description': '[GET]Retrieve a mapping.', 'syntax':
+            'http://localhost:8080/repox/rest/mappings/mappingId'}, {'description': '[PUT]Update a mapping.', 'syntax':
+            'http://localhost:8080/repox/rest/mappings/mappingId'}, {'description': '[DELETE]Delete a mapping.',
+            'syntax': 'http://localhost:8080/repox/rest/mappings/mappingId'}]}
+
+        """
         return requests.get(
             f"{self.swagger_endpoint}/mappings/options",
             auth=(self.username, self.password),
