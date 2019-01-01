@@ -1086,6 +1086,42 @@ class Repox:
             auth=(self.username, self.password),
         ).status_code
 
+    def get_options_for_harvests(self) -> dict:
+        """Get details from Repox Swagger about all the Harvest APIs.
+
+        This is a direct implementation of an API from Repox.
+
+        Returns:
+            dict: Details about Harvest APIs.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_options_for_harvests()
+            {'option': [{'description': '[OPTIONS]Get options over dataset.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/harvest'}, {'description': '[GET]Get options over dataset.',
+            'syntax': 'http://localhost:8080/repox/rest/datasets/harvest/options'}, {'description':
+            '[POST]Initiates a new harvest of the dataset with id.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/start', 'queryParameter': ['type']},
+            {'description': '[DELETE]Cancels a harvesting ingest.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/cancel'}, {'description':
+            '[POST]Schedules an automatic harvesting.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/schedule', 'queryParameter':
+            ['incremental']}, {'description': '[GET]Retrieves the list of schedules.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/schedules'}, {'description':
+            '[DELETE]Deletes an automatic harvesting.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/schedules/{taskId}'}, {'description':
+            '[GET]Gets the status of a specific dataset harvesting.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/status'}, {'description':
+            '[GET]Gets the logs of the last ingest.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/{datasetId}/harvest/log'}, {'description':
+            '[GET]Gets a list of currently executing dataset harvests.', 'syntax':
+            'http://localhost:8080/repox/rest/datasets/harvests'}]}
+
+        """
+        return requests.get(
+            f"{self.swagger_endpoint}/datasets/harvest/options",
+            auth=(self.username, self.password),
+        ).json()
+
     # Mappings
     def get_options_for_mappings(self) -> dict:
         """Get details from Repox Swagger about all the Mappings APIs.
