@@ -42,6 +42,23 @@ If you are looking for information about a specific method, its parameters, or i
 
    source/repox
 
+Release History
+---------------
+
+See history of changes here:
+
+.. toctree::
+   :maxdepth: 2
+
+   history.rst
+
+TODO List
+---------
+
+See TODO list here:
+
+.. toctree::
+   :maxdepth: 2
 
 Search / Index
 --------------
