@@ -60,6 +60,8 @@ See TODO list here:
 .. toctree::
    :maxdepth: 2
 
+   todo.rst
+
 Search / Index
 --------------
 
