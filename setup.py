@@ -9,7 +9,7 @@ setup(
     description="a lightweight Repox client written in Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    version="0.0.2",
+    version="0.0.3",
     author="Mark Baggett",
     author_email="mbagget1@utk.edu",
     maintainer_email="mbagget1@utk.edu",
