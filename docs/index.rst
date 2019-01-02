@@ -67,7 +67,7 @@ Contributing
 
 How to contribute:
 
-.. include:: ../CONTRIBUTING.md
+.. include:: ../CONTRIBUTING.rst
 
 Search / Index
 --------------
