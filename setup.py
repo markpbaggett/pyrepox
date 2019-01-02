@@ -17,7 +17,11 @@ setup(
     packages=find_packages(),
     install_requires=["requests>=2.2.1", "xmltodict>=0.11.0"],
     extras_require={
-        "docs": ["sphinx >= 1.4", "sphinxcontrib-napoleon >= 0.7"]
+        "docs": [
+            "sphinx >= 1.4",
+            "sphinxcontrib-napoleon >= 0.7",
+            "recommonmark >= 0.4.0",
+        ]
     },
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
