@@ -7,6 +7,8 @@ Pyrepox: Repox for Humans
 ===================================
 .. image:: https://travis-ci.org/markpbaggett/pyrepox.png
 .. image:: https://readthedocs.org/projects/pyrepox/badge/?version=latest
+.. image:: https://badge.fury.io/py/repox.svg
+    :target: https://badge.fury.io/py/repox
 
 Pyrepox is a lightweight `Repox <https://github.com/europeana/REPOX>`_
 client written in Python. It is designed to make reading, writing,
