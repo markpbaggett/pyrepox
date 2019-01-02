@@ -20,6 +20,7 @@ Release History / Change Log
 * Integrated pre-commit, black, and Flake8 into workflows.
 * Created todo list.
 * Created release history / change log.
+* Created CONTRIBUTING.md.
 
 0.0.1 (December 30, 2018)
 -------------------------

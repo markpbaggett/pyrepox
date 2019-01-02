@@ -62,6 +62,13 @@ See TODO list here:
 
    todo.rst
 
+Contributing
+------------
+
+How to contribute:
+
+.. include:: ../CONTRIBUTING.md
+
 Search / Index
 --------------
 
