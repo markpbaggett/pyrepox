@@ -6,7 +6,7 @@ Report bugs, issues, and other problems
 
 Report bugs through the `issue tracker <https://github.com/markpbaggett/pyrepox/issues>`_.
 
-**NOTE**: some bugs are acknowledge in the `TODO list <https://pyrepox.readthedocs.io/en/latest/todo.html>`_.
+**NOTE**: some bugs are acknowledged in the `TODO list <https://pyrepox.readthedocs.io/en/latest/todo.html>`_.
 
 Contributing Code
 -----------------
