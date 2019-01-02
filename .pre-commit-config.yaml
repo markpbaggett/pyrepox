@@ -1,3 +1,4 @@
+exclude: "docs/conf.py"
 repos:
 -   repo: https://github.com/ambv/black
     rev: stable
