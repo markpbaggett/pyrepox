@@ -1,7 +1,7 @@
 Release History / Change Log
 ============================
 
-0.0.2 (January 1, 2018)
+0.0.2 (January 1, 2019)
 -----------------------
 
 **Improvements**
