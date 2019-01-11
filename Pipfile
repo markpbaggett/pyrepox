@@ -6,13 +6,14 @@ name = "pypi"
 [packages]
 requests = "*"
 xmltodict = "*"
+arrow = "*"
 
 [dev-packages]
-pre-commit = "*"
 sphinx = "*"
 sphinxcontrib-napoleon = "*"
 "flake8" = "*"
 recommonmark = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.7"

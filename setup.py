@@ -15,7 +15,7 @@ setup(
     maintainer_email="mbagget1@utk.edu",
     url="https://github.com/markpbaggett/pyrepox",
     packages=find_packages(),
-    install_requires=["requests>=2.2.1", "xmltodict>=0.11.0"],
+    install_requires=["requests>=2.2.1", "xmltodict>=0.11.0", "arrow>=0.13.0"],
     extras_require={
         "docs": [
             "sphinx >= 1.4",

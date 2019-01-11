@@ -1,6 +1,7 @@
 import json
 import requests
 import xmltodict
+import arrow
 
 
 class Repox:
@@ -1022,15 +1023,57 @@ class Repox:
             auth=(self.username, self.password),
         ).status_code
 
-    # TODO Figure out what the dict needs to look like. This isn't documented. Create the doctest and convert docstring.
+    # TODO: Let users simply specify a day rather than a date
     def schedule_harvest(
-        self, dataset_id: str, metadata: dict, incremental: bool = False
+        self,
+        dataset_id: str,
+        frequency: str = "ONCE",
+        time: str = "NOT SET",
+        date: str = "NOT SET",
+        xmonths: int = 0,
+        incremental: bool = False,
     ) -> int:
-        """Requires a dataset_id, metadata about the harvest as a dict, and optionally whether or not
-        this is an incremental harvest (defaults to False).
+        """Schedule a future harvest.
 
-        Returns the HTTP status code as an int.
+        Requires a dataset_id an schedules a future harvest. Optionally takes arguments for frequency of the harvest,
+        the time of the harvest, and the date of the first harvest.
+
+        Args:
+            dataset_id (str): Required. The dataset_id of the set to harvest
+            frequency (str): Optional. The frequency of the harvest. Defaults to ONCE. Other options: DAILY, WEEKLY,
+                XMONTHLY. Note, if XMONTHLY, also define xmonthly.
+            time (str): Optional. Time of day of the harvest. If not set, schedules harvest for 15 minutes from now.
+            date (str): Optional. Date of first harvest. If not set, schedules harvest for 15 minutes from now.
+            xmonths (int): Optional. If frequency is XMONTHLY, how frequent to perform harvest. Defaults to 1.
+            incremental (bool): Optional. Defaults to false.
+
+        Returns:
+            int: the HTTP status code as the request.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").schedule_harvest("bcpl")
+            201
+            >>> Repox("http://localhost:8080", "username", "password").schedule_harvest("bcpl", frequency="XMONTHLY",
+            ... xmonths=2, time="01:00", date="01/12/2019")
+            201
+
         """
+        if time == "NOT SET" or date == "NOT SET":
+            now = arrow.utcnow().to("local")
+            if time == "NOT SET":
+                time = now.shift(minutes=15).format("HH:mm")
+            if date == "NOT SET":
+                date = now.format("M/D/YYYY")
+        if frequency == "XMONTHLY":
+            xmonths = 1
+        metadata = {
+            "taskType": "SCHEDULED",
+            "id": "",
+            "frequency": frequency,
+            "xmonths": xmonths,
+            "time": time,
+            "date": date,
+        }
         return requests.post(
             f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedule?incremental="
             f"{str(incremental).lower()}",
