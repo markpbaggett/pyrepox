@@ -1064,7 +1064,7 @@ class Repox:
                 time = now.shift(minutes=15).format("HH:mm")
             if date == "NOT SET":
                 date = now.format("M/D/YYYY")
-        if frequency == "XMONTHLY":
+        if frequency == "XMONTHLY" and xmonths == 0:
             xmonths = 1
         metadata = {
             "taskType": "SCHEDULED",
