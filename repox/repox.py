@@ -2,6 +2,7 @@ import json
 import requests
 import xmltodict
 import arrow
+from collections import deque
 
 
 class Repox:
@@ -1035,7 +1036,7 @@ class Repox:
     ) -> int:
         """Schedule a future harvest.
 
-        Requires a dataset_id an schedules a future harvest. Optionally takes arguments for frequency of the harvest,
+        Requires a dataset_id and schedules a future harvest. Optionally takes arguments for frequency of the harvest,
         the time of the harvest, and the date of the first harvest.
 
         Args:
@@ -1063,7 +1064,7 @@ class Repox:
             if time == "NOT SET":
                 time = now.shift(minutes=15).format("HH:mm")
             if date == "NOT SET":
-                date = now.format("M/D/YYYY")
+                date = now.format("DD/MM/YYYY")
         if frequency == "XMONTHLY" and xmonths == 0:
             xmonths = 1
         metadata = {
@@ -1077,6 +1078,66 @@ class Repox:
         return requests.post(
             f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedule?incremental="
             f"{str(incremental).lower()}",
+            headers=self.headers,
+            data=json.dumps(metadata),
+            auth=(self.username, self.password),
+        ).status_code
+
+    def schedule_weekly_harvest(
+        self, dataset_id: str, day_of_week: str, time: str = "Not Set"
+    ) -> int:
+        """Schedule a weekly harvest for a set on a specific day of the week.
+
+        Requires a dataset_id and a day_of_week and schedules a recurring harvest of a specific set each week.
+
+        Args:
+            dataset_id (str): Required. The dataset_id of the associated dataset.
+            day_of_week (str): Required. The day of the week of the week of the harvest.
+            time (str): Optional.  The time of day to schedule the harvest.  Defaults to 15 minutes from now.
+
+        Returns:
+            int:  The HTTP status code of the request
+
+        Examples:
+            >>> Repox("http://localhost:8080", "admin", "admin").schedule_weekly_harvest("nr", "Sunday")
+            201
+            >>> Repox("http://localhost:8080", "admin", "admin").schedule_weekly_harvest("nr", "Sunday", time="04:00")
+            201
+            >>> Repox("http://localhost:8080", "admin", "admin").schedule_weekly_harvest("nr", "Tomorrow")
+            500
+
+        """
+        days_of_week = deque(
+            [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+            ]
+        )
+        if day_of_week not in days_of_week:
+            return 500
+        now = arrow.utcnow().to("local")
+        today = days_of_week.index(arrow.utcnow().to("local").format("dddd"))
+        days_of_week.rotate(-today)
+        shift_time = days_of_week.index(day_of_week)
+        if shift_time == 0:
+            shift_time = 7
+        if time == "Not Set":
+            time = now.shift(minutes=15).format("HH:mm")
+        metadata = {
+            "taskType": "SCHEDULED",
+            "id": "",
+            "frequency": "WEEKLY",
+            "xmonths": 0,
+            "time": time,
+            "date": now.shift(days=shift_time).format("DD/MM/YYYY"),
+        }
+        return requests.post(
+            f"{self.swagger_endpoint}/datasets/{dataset_id}/harvest/schedule?incremental=false",
             headers=self.headers,
             data=json.dumps(metadata),
             auth=(self.username, self.password),
@@ -1345,3 +1406,11 @@ class Repox:
             headers="application/xml",
             data=metadata,
         ).status_code
+
+
+if __name__ == "__main__":
+    print(
+        Repox(
+            "http://localhost:8080", "admin", "admin"
+        ).schedule_weekly_harvest("nr", "Sunday")
+    )
