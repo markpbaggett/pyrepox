@@ -1406,11 +1406,3 @@ class Repox:
             headers="application/xml",
             data=metadata,
         ).status_code
-
-
-if __name__ == "__main__":
-    print(
-        Repox(
-            "http://localhost:8080", "admin", "admin"
-        ).schedule_weekly_harvest("nr", "Sunday")
-    )
