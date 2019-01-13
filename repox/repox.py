@@ -1303,46 +1303,43 @@ class Repox:
         Returns:
             str: The value of //record/metadata if it exists.  If not, an error string.
 
-        Todo:
-            * (markpbaggett) XML as strings in doctests do not display properly in sphinx.  Fix.
-
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").get_record(
             ... "oai:dltn.repox.test.new_bcpl:urn:dpla.lib.utk.edu.bcpl:bcpl_123")
-            '\n<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
+            '\\n<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
             xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3
-            http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">  \n  <identifier type="local">bcpl_00775</identifier>
-            \n  <titleInfo> \n    <title>Macklin Kerr House (NR)</title> \n  </titleInfo>  \n
-            <typeOfResource>still image</typeOfResource>  \n  <originInfo> \n    <dateCreated>1847</dateCreated>  \n
-            <dateCreated encoding="edtf" keyDate="yes">1847</dateCreated> \n  </originInfo>  \n  <physicalDescription>
-            \n    <form authority="aat" valueURI="http://vocab.getty.edu/aat/300046300">photographs</form>  \n
-            <digitalOrigin>reformatted digital</digitalOrigin> \n  </physicalDescription>  \n  <abstract>Architectural
-            -- two story brick with frame side and rear additions; built 1847</abstract>  \n  <abstract>Historical --
+            http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">  \\n  <identifier type="local">bcpl_00775</identifier>
+            \\n  <titleInfo> \\n    <title>Macklin Kerr House (NR)</title> \\n  </titleInfo>  \\n
+            <typeOfResource>still image</typeOfResource>  \\n  <originInfo> \\n    <dateCreated>1847</dateCreated>  \\n
+            <dateCreated encoding="edtf" keyDate="yes">1847</dateCreated> \\n  </originInfo>  \\n  <physicalDescription>
+            \\n    <form authority="aat" valueURI="http://vocab.getty.edu/aat/300046300">photographs</form>  \\n
+            <digitalOrigin>reformatted digital</digitalOrigin> \\n  </physicalDescription>  \\n  <abstract>Architectural
+            -- two story brick with frame side and rear additions; built 1847</abstract>  \\n  <abstract>Historical --
             site of Gen. O. O. Howard\'s headquarters during the Federal Army\'s visit to Blount County, December 1863.
-            </abstract>  \n  <language> \n    <languageTerm authority="iso639-2b" type="code">zxx</languageTerm> \n
-            </language>  \n  <note>This structure appears on the National Historical Registry.</note>  \n
-            <note>Ownership: Private; Current Use: Residence</note>  \n  <note>Address: Big Gully Rd., 0.3 mi. N. of
-            Kyker Rd., Maryville, TN</note>  \n  <location> \n    <physicalLocation>Blount County Public Library
-            </physicalLocation>  \n    <url access="object in context" usage="primary display">
-            https://digital.lib.utk.edu/collections/islandora/object/bcpl%3A123</url>  \n    <url access="preview">
-            https://digital.lib.utk.edu/collections/islandora/object/bcpl%3A123/datastream/TN/view</url> \n  </location>
-            \n  <subject authority="lcsh" valueURI="http://id.loc.gov/authorities/subjects/sh85061097"> \n
-            <topic>Historic buildings</topic> \n  </subject>  \n  <subject> \n    <geographic authority="naf"
-            valueURI="http://id.loc.gov/authorities/names/n81025935">Blount County (Tenn.)</geographic>  \n
-            <cartographics> \n      <coordinates>35.68724, -83.92553</coordinates> \n    </cartographics> \n  </subject>
-            \n  <subject> \n    <hierarchicalGeographic> \n      <country>United States</country>  \n
-            <state>Tennessee</state>  \n      <city>Maryville</city>  \n      <citySection>Street: Big Gully Road, 0.3
-            mile North of Kyker Road</citySection> \n    </hierarchicalGeographic> \n  </subject>  \n
-            <relatedItem displayLabel="Project" type="host"> \n    <titleInfo> \n      <title>Blount County Historical
-            and Architectural Inventory</title> \n    </titleInfo> \n  </relatedItem>  \n  <accessCondition type="local
+            </abstract>  \\n  <language> \\n    <languageTerm authority="iso639-2b" type="code">zxx</languageTerm> \\n
+            </language>  \\n  <note>This structure appears on the National Historical Registry.</note>  \\n
+            <note>Ownership: Private; Current Use: Residence</note>  \\n  <note>Address: Big Gully Rd., 0.3 mi. N. of
+            Kyker Rd., Maryville, TN</note>  \\n  <location> \\n    <physicalLocation>Blount County Public Library
+            </physicalLocation>  \\n    <url access="object in context" usage="primary display">
+            https://digital.lib.utk.edu/collections/islandora/object/bcpl%3A123</url>  \\n    <url access="preview">
+            https://digital.lib.utk.edu/collections/islandora/object/bcpl%3A123/datastream/TN/view</url> \\n </location>
+            \\n  <subject authority="lcsh" valueURI="http://id.loc.gov/authorities/subjects/sh85061097"> \\n
+            <topic>Historic buildings</topic> \\n  </subject>  \\n  <subject> \\n    <geographic authority="naf"
+            valueURI="http://id.loc.gov/authorities/names/n81025935">Blount County (Tenn.)</geographic>  \\n
+            <cartographics> \\n      <coordinates>35.68724, -83.92553</coordinates> \\n    </cartographics> \\n
+            </subject>\\n  <subject> \\n    <hierarchicalGeographic> \\n      <country>United States</country>  \\n
+            <state>Tennessee</state>  \\n      <city>Maryville</city>  \\n      <citySection>Street: Big Gully Road, 0.3
+            mile North of Kyker Road</citySection> \\n    </hierarchicalGeographic> \\n  </subject>  \\n
+            <relatedItem displayLabel="Project" type="host"> \\n    <titleInfo> \\n      <title>Blount County Historical
+            and Architectural Inventory</title> \\n    </titleInfo> \\n  </relatedItem> \\n <accessCondition type="local
             rights statement">Digital Image Copyright (c) 2004. Blount County Public Library, Maryville, TN. All Rights
             Reserved. For permission to use, contact: Reference Department, Blount County Public Library, 508 N. Cusick
-            Street, Maryville, TN 37804 (865-982-0982).</accessCondition>  \n  <recordInfo> \n    <recordIdentifier>
-            record_bcpl_00775</recordIdentifier>  \n    <recordContentSource>University of Tennessee, Knoxville
-            Libraries</recordContentSource>  \n    <languageOfCataloging> \n      <languageTerm authority="iso639-2b"
-            type="code">eng</languageTerm> \n    </languageOfCataloging>  \n    <recordOrigin>Created and edited in
-            general conformance to MODS Guidelines (Version 3.5).</recordOrigin> \n  </recordInfo> \n</mods>'
+            Street, Maryville, TN 37804 (865-982-0982).</accessCondition>  \\n  <recordInfo> \\n    <recordIdentifier>
+            record_bcpl_00775</recordIdentifier>  \\n    <recordContentSource>University of Tennessee, Knoxville
+            Libraries</recordContentSource>  \\n    <languageOfCataloging> \\n      <languageTerm authority="iso639-2b"
+            type="code">eng</languageTerm> \\n    </languageOfCataloging>  \\n    <recordOrigin>Created and edited in
+            general conformance to MODS Guidelines (Version 3.5).</recordOrigin> \\n  </recordInfo> \\n</mods>'
             >>> Repox("http://localhost:8080", "username", "password").get_record(
             ... "urn:dpla.lib.utk.edu.p16877coll1:oai:cdm16877.contentdm.oclc.org:p16877coll1/17")
             "REPOX Error: This is a generic error and is thrown when Repox can't find a matching metadata.
