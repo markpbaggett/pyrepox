@@ -1024,7 +1024,6 @@ class Repox:
             auth=(self.username, self.password),
         ).status_code
 
-    # TODO: Let users simply specify a day rather than a date
     def schedule_harvest(
         self,
         dataset_id: str,

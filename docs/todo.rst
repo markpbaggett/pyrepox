@@ -13,4 +13,3 @@ repox.repox.Repox
 6. delete_record() always returns a 200 status code but doesn't do anything.
 7. add_record() does not work.
 8. add_mapping() does not work.
-9. add option to schedule_harvest based on day of week
