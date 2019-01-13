@@ -585,7 +585,7 @@ class Repox:
             'http://nashville.contentdm.oclc.org/oai/oai.php', 'oaiSet': 'nr', 'recordIdPolicy': {'IdProvided': {}}},
             'nameCode': 'nashvillepublic_nr', 'name': 'Nashville Public Library nr'}"
             >>> Repox("http://localhost:8080", "username", "password").get_dataset_details("cmhf_musicaudio")
-            "{'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'DIR', 'id': 'cmhf_musicaudio', 'schema':
+            {'containerType': 'DEFAULT', 'dataSource': {'dataSetType': 'DIR', 'id': 'cmhf_musicaudio', 'schema':
             'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd', 'namespace': 'http://worldcat.org/xmlschemas/qdc-1.0',
             'description': 'cmhf_musicaudio', 'metadataFormat': 'oai_qdc', 'isSample': False, 'exportDir':
             '/vhosts/repoxdata/export/cmhf_musicaudio', 'marcFormat': '', 'sourcesDirPath':
