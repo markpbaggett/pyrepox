@@ -289,8 +289,6 @@ class Repox:
             auth=(self.username, self.password),
         ).json()
 
-    # TODO Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
-    # TODO Describe the required parts of a metadata dict.
     def create_provider(self, aggregator_id: str, metadata: dict) -> int:
         """Create a provider in a specific aggregator.
 
@@ -302,6 +300,10 @@ class Repox:
 
         Returns:
             int: The HTTP status code of the request.
+
+        Todo:
+            * (markpbaggett) Describe the required parts of a metadata dict.
+            * (markpbaggett) Add a static method to check the contents of metadata to avoid 400 / 406 status codes.
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').create_provider("dltn", {"id": "utc", "name":
@@ -318,8 +320,6 @@ class Repox:
             data=json.dumps(metadata),
         ).status_code
 
-    # TODO Determine if there is a list of allowed country codes.
-    # TODO Determine if there is an exhaustive list of provider_types.
     def update_provider(
         self,
         provider_id: str,
@@ -350,6 +350,10 @@ class Repox:
 
         Returns:
             int: The HTTP status code response of the request.
+
+        Todo:
+            * (markpbaggett) Determine if there is a list of allowed country codes.
+            * (markpbaggett) Determine if there is an exhaustive list of provider_types.
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').update_provider("UTKr0",
@@ -641,7 +645,6 @@ class Repox:
             auth=(self.username, self.password),
         ).json()["result"]
 
-    # TODO Determine which keys are required and which are not and write something to help with unpacking this.
     def create_dataset(self, provider_id: str, metadata: dict) -> int:
         """Create a dataset.
 
@@ -653,6 +656,10 @@ class Repox:
 
         Returns:
             int: The HTTP status code of your request.
+
+        Todo:
+            * (markpbaggett) Determine which keys are required and which are not and write something to help with
+              unpacking this.
 
         Examples:
             >>> details = {
@@ -673,7 +680,6 @@ class Repox:
             data=json.dumps(metadata),
         ).status_code
 
-    # TODO This returns a 200 even if permissions are wrong. Can we do something about this.
     def export_dataset(self, dataset_id: str) -> int:
         """Exports a metadata records from a dataset to disk.
 
@@ -685,6 +691,9 @@ class Repox:
 
         Returns:
             int: The HTTP status code of your request.
+
+        Todo:
+            * (markpbaggett) This returns a 200 even if permissions are wrong. Can we do something about this.
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").export_dataset("nr")
@@ -722,7 +731,6 @@ class Repox:
             auth=(self.username, self.password),
         ).status_code
 
-    # TODO Create similar update methods for other dataset types.
     def update_oai_dataset(
         self,
         dataset_id: str,
@@ -753,6 +761,9 @@ class Repox:
 
         Returns:
             int: The HTTP status Code of the request.
+
+        Todo:
+            * (markpbaggett) Create similar update methods for other dataset types.
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").update_oai_dataset("bcpl",
@@ -949,7 +960,6 @@ class Repox:
             auth=(self.username, self.password),
         ).json()
 
-    # TODO XML as strings in doctests do not display properly in rst.  Fix.
     def get_log_of_last_harvest(self, dataset_id: str) -> str:
         """Get the log of the last harvest.
 
@@ -963,25 +973,25 @@ class Repox:
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").get_log_of_last_harvest("new_bcpl")
-            '\n<report> \n  <status>OK</status>  \n  <dataSetId>new_bcpl</dataSetId>  \n  <startTime>2018-12-28 05:00:50
-            </startTime>  \n  <endTime>2018-12-28 05:00:52</endTime>  \n  <duration>00:00:01</duration>  \n  <records>93
-            </records>  \n  <deleted>0</deleted>  \n  <summary> \n    <info time="2018-12-28 05:00:50 UTC"
-            class="pt.utl.ist.oai.OaiDataSource">Starting to import from Data Source with id new_bcpl</info>  \n
+            '\\n<report> \\n  <status>OK</status>  \\n  <dataSetId>new_bcpl</dataSetId>  \\n  <startTime>2018-12-28
+            05:00:50</startTime>  \\n  <endTime>2018-12-28 05:00:52</endTime>  \\n  <duration>00:00:01</duration>  \\n
+            <records>93</records>  \\n  <deleted>0</deleted>  \\n  <summary> \\n    <info time="2018-12-28 05:00:50 UTC"
+            class="pt.utl.ist.oai.OaiDataSource">Starting to import from Data Source with id new_bcpl</info>  \\n
             <info time="2018-12-28 05:00:51 UTC" class="pt.utl.ist.oai.OaiHarvester">Starting OAI Harvest URL:
-            https://dpla.lib.utk.edu/repox/OAIHandler - Set:bcpl</info>  \n    <info time="2018-12-28 05:00:51 UTC"
+            https://dpla.lib.utk.edu/repox/OAIHandler - Set:bcpl</info>  \\n    <info time="2018-12-28 05:00:51 UTC"
             class="pt.utl.ist.oai.OaiHarvester">sourceUrl: https://dpla.lib.utk.edu/repox/OAIHandler, sourceSet: bcpl,
             outputBaseDir: /data/repoxData/[temp]OAI-PMH_Requests/-bcpl, fromDateString: null, untilDateString: null,
-            metadataFormat: mods</info>  \n    <info time="2018-12-28 05:00:51 UTC" class="pt.utl.ist.oai.OaiHarvester">
-            Harvest finished - number of requests: 1</info>  \n    <info time="2018-12-28 05:00:51 UTC"
+            metadataFormat: mods</info>  \\n   <info time="2018-12-28 05:00:51 UTC" class="pt.utl.ist.oai.OaiHarvester">
+            Harvest finished - number of requests: 1</info>  \\n    <info time="2018-12-28 05:00:51 UTC"
             class="pt.utl.ist.oai.OaiHarvester">Response was an empty list in operation ListRecords (may be invalid set
-            or does not exist new records from the last ingest)</info>  \n    <info time="2018-12-28 05:00:51 UTC"
+            or does not exist new records from the last ingest)</info>  \\n    <info time="2018-12-28 05:00:51 UTC"
             class="pt.utl.ist.oai.OaiHarvester">Finished OAI Harvest URL: https://dpla.lib.utk.edu/repox/OAIHandler -
-            Set:bcpl</info>  \n    <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.ResponseTransformer">
-            Starting to split OAI-PMH request to Record Files</info>  \n    <info time="2018-12-28 05:00:52 UTC"
-            class="pt.utl.ist.oai.ResponseTransformer">Finished splitting OAI-PMH request to List</info>  \n
+            Set:bcpl</info>  \\n    <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.ResponseTransformer">
+            Starting to split OAI-PMH request to Record Files</info>  \\n    <info time="2018-12-28 05:00:52 UTC"
+            class="pt.utl.ist.oai.ResponseTransformer">Finished splitting OAI-PMH request to List</info>  \\n
             <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.OaiDataSource">Ingest Process ended. Exiting.
-            </info>  \n    <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.OaiDataSource">Finished importing
-            from Data Source with id new_bcpl. Exit status: OK</info> \n  </summary> \n</report>'
+            </info>  \\n    <info time="2018-12-28 05:00:52 UTC" class="pt.utl.ist.oai.OaiDataSource">Finished importing
+            from Data Source with id new_bcpl. Exit status: OK</info> \\n  </summary> \\n</report>'
 
         """
         return requests.get(
@@ -989,9 +999,14 @@ class Repox:
             auth=(self.username, self.password),
         ).json()["result"]
 
-    # TODO This seems to always return a 405 status code: method not allowed for the requested resource. Find out why.
     def get_list_of_running_harvests(self) -> str:
-        """Returns a message about currently running harvests."""
+        """Returns a message about currently running harvests.
+
+        Todo:
+            * (markpbaggett) This seems to always return a 405 status code: method not allowed for the requested
+              resource. Find out why.
+
+        """
         return requests.get(
             f"{self.swagger_endpoint}/datasets/harvest",
             auth=(self.username, self.password),
@@ -1276,7 +1291,6 @@ class Repox:
             auth=(self.username, self.password),
         ).json()
 
-    # TODO XML as strings in doctests do not display properly in rst.  Fix.
     def get_record(self, record_id: str) -> str:
         """Get a specific record.
 
@@ -1288,6 +1302,9 @@ class Repox:
 
         Returns:
             str: The value of //record/metadata if it exists.  If not, an error string.
+
+        Todo:
+            * (markpbaggett) XML as strings in doctests do not display properly in sphinx.  Fix.
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").get_record(
@@ -1343,18 +1360,39 @@ class Repox:
                 "This can be caused by an OAI record with the status of deleted."
             )
 
-    # TODO While this returns a 200, it does not seem to do anything.  Post an issue in Repox GitHub repo.
     def delete_record(self, record_id: str) -> int:
-        """Accepts a record id and deletes the corresponding record.  Returns the HTTP status code as an int."""
+        """Accepts a record id and deletes the corresponding record.
+
+        Args:
+            * record_id (str): a record_id of a record based on OAI_PMH.
+
+        Returns:
+            * int: The HTTP status code of the request.
+
+        Todo:
+            * (markpbaggett) While this returns a 200, it does not seem to do anything.
+              Post an issue in Repox GitHub repo about this.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").delete_record(
+            ... "urn:dpla.lib.utk.edu.p16877coll1:oai:cdm16877.contentdm.oclc.org:p16877coll1/17")
+            200
+
+        """
         return requests.get(
             f"{self.swagger_endpoint}/records?recordId={record_id}&type=delete",
             auth=(self.username, self.password),
         ).status_code
 
-    # TODO Need to test
     def add_a_record(
         self, dataset_id: str, record_id: str, xml_record: str
     ) -> int:
+        """Add a record to a set.
+
+        Todo:
+            * (markpbaggett) Although this follows the API docs, this doesn't seem to do anything.
+
+        """
         return requests.post(
             f"{self.swagger_endpoint}/records?datasetId={dataset_id}&recordId={record_id}",
             auth=(self.username, self.password),
@@ -1385,9 +1423,12 @@ class Repox:
             auth=(self.username, self.password),
         ).json()
 
-    # TODO.
     def add_mapping(self, metadata: dict) -> int:
-        """
+        """ Add a mapping.
+
+        Todo:
+            * This still needs to be implemented.
+
         {
         'id': 'UTKMODSrepaired',
         'description': 'UTK MODS modified for DLTN MODS',
