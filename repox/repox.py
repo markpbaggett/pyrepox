@@ -1424,7 +1424,7 @@ class Repox:
         """ Add a mapping.
 
         Todo:
-            * This still needs to be implemented.
+            * (markpbaggett) This still needs to be implemented.
 
         {
         'id': 'UTKMODSrepaired',
