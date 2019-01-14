@@ -6,8 +6,18 @@ from collections import deque
 
 
 class Repox:
+    """An object to connect to and perform actions in a Repox instance.
+
+    Attributes:
+        swagger_endpoint: A string that represents the base URL of the Repox Swagger API.
+        username: The username used to connect to the Swagger API.
+        password: The password used to connect to the Swagger API.
+        headers: A dict to act as the default HTTP header of a request.
+
+    """
+
     def __init__(self, repox_url: str, username: str, password: str):
-        """Creates a new instance of Repox.
+        """Inits Repox with the base URL of your Repox instance and your Swagger username and password.
 
         Args:
             repox_url (str): The url of your Repox instance.
