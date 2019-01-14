@@ -112,3 +112,26 @@ def mocked_datasets_get_str(*args, **kwargs):
         return MockResponse("November 8, 2018").content
 
     return MockResponse(None)
+
+
+def mocked_schedule_harvest(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, response):
+            self.status_code = 201
+
+    days_of_week = (
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    )
+
+    if "dataset_id" in kwargs and kwargs["day_of_week"] in days_of_week:
+        return MockResponse("Tuesday").status_code
+    else:
+        return 500
+
+    return 500
