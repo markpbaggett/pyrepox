@@ -1145,7 +1145,7 @@ class Repox:
         if day_of_week not in days_of_week:
             return 500
         now = arrow.utcnow().to("local")
-        today = days_of_week.index(arrow.utcnow().to("local").format("dddd"))
+        today = days_of_week.index(now.format("dddd"))
         days_of_week.rotate(-today)
         shift_time = days_of_week.index(day_of_week)
         if shift_time == 0:
