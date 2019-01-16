@@ -9,6 +9,7 @@ from .mocks import (
     mocked_datasets_get_str,
     mocked_providers_get_dict,
     mocked_providers_get_list,
+    mocked_schedule_weekly_harvest,
     mocked_schedule_harvest,
 )
 
@@ -141,7 +142,7 @@ class RepoxTestHarvestMethods(unittest.TestCase):
 
     @patch(
         "repox.repox.Repox.schedule_weekly_harvest",
-        side_effect=mocked_schedule_harvest,
+        side_effect=mocked_schedule_weekly_harvest,
     )
     def test_schedule_weekly_harvest(self, mock_get):
         repox_response = self.request.schedule_weekly_harvest(
@@ -150,6 +151,22 @@ class RepoxTestHarvestMethods(unittest.TestCase):
         self.assertEqual(repox_response, 201)
         repox_response = self.request.schedule_weekly_harvest(
             dataset_id="new_bcpl", day_of_week="Tomorrow"
+        )
+        self.assertEqual(repox_response, 500)
+
+    @patch(
+        "repox.repox.Repox.schedule_harvest",
+        side_effect=mocked_schedule_harvest,
+    )
+    def test_schedule_harvest(self, mock_get):
+        repox_response = self.request.schedule_harvest(dataset_id="abc")
+        self.assertEqual(repox_response, 201)
+        repox_response = self.request.schedule_harvest(
+            dataset_id="abc", frequency="DAILY"
+        )
+        self.assertEqual(repox_response, 201)
+        repox_response = self.request.schedule_harvest(
+            dataset_id="abc", frequency="YEARLY"
         )
         self.assertEqual(repox_response, 500)
 

@@ -114,24 +114,66 @@ def mocked_datasets_get_str(*args, **kwargs):
     return MockResponse(None)
 
 
-def mocked_schedule_harvest(*args, **kwargs):
-    class MockResponse:
-        def __init__(self, response):
-            self.status_code = 201
+def mocked_schedule_weekly_harvest(*args, **kwargs):
+    class MockWeeklyResponse:
+        def __init__(self, dataset_id, day="Tuesday"):
+            self.status_code = self.test_day(day)
 
-    days_of_week = (
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-    )
+        @staticmethod
+        def test_day(user_input):
+            days_of_week = (
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+            )
+            if user_input in days_of_week:
+                return 201
+            else:
+                return 500
 
-    if "dataset_id" in kwargs and kwargs["day_of_week"] in days_of_week:
-        return MockResponse("Tuesday").status_code
+    if "dataset_id" in kwargs and "day_of_week" in kwargs:
+        return MockWeeklyResponse("abc", kwargs["day_of_week"]).status_code
     else:
         return 500
 
-    return 500
+
+def mocked_schedule_harvest(*args, **kwargs):
+    class MockScheduleHarvest:
+        def __init__(
+            self,
+            dataset_id,
+            frequency="ONCE",
+            time="NOT SET",
+            date="NOT SET",
+            xmonths=0,
+            incremental=False,
+        ):
+            self.dataset_id = dataset_id
+            self.frequency = frequency
+            self.time = time
+            self.date = date
+            self.xmonths = xmonths
+            self.incremental = incremental
+            self.status_code = self.determine_status()
+
+        def determine_status(self):
+            possible_frequencies = ("ONCE", "DAILY", "WEEKLY", "XMONTHLY")
+            if self.frequency not in possible_frequencies:
+                return 500
+            elif type(self.incremental) != bool:
+                return 500
+            else:
+                return 201
+
+    if "dataset_id" in kwargs and "frequency" in kwargs:
+        return MockScheduleHarvest(
+            kwargs["dataset_id"], frequency=kwargs["frequency"]
+        ).status_code
+    elif "dataset_id" in kwargs:
+        return MockScheduleHarvest(kwargs["dataset_id"]).status_code
+    else:
+        return 500
