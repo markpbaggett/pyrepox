@@ -363,7 +363,8 @@ class Repox:
 
         Todo:
             * (markpbaggett) Determine if there is a list of allowed country codes.
-            * (markpbaggett) Determine if there is an exhaustive list of provider_types.
+            * (markpbaggett) Modify code around known provider types: ARCHIVE, MUSEUM, LIBRARY, AUDIO_VISUAL_ARCHIVE,
+              RESEARCH_EDUCATIONAL, CROSS_SECTOR, PUBLISHER, PRIVATE, AGGREGATOR, UNKNOWN
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').update_provider("UTKr0",
@@ -391,6 +392,19 @@ class Repox:
         if homepage == "":
             homepage = old_data["homepage"]
         if provider_type == "":
+            provider_type = old_data["providerType"]
+        elif provider_type not in (
+            "ARCHIVE",
+            "MUSEUM",
+            "LIBRARY",
+            "AUDIO_VISUAL_ARCHIVE",
+            "RESEARCH_EDUCATIONAL",
+            "CROSS_SECTOR",
+            "PUBLISHER",
+            "PRIVATE",
+            "AGGREGATOR",
+            "UNKNOWN",
+        ):
             provider_type = old_data["providerType"]
         if email == "":
             email = old_data["email"]
@@ -1070,7 +1084,7 @@ class Repox:
             time (str): Optional. Time of day of the harvest. If not set, schedules harvest for 15 minutes from now.
             date (str): Optional. Date of first harvest. If not set, schedules harvest for 15 minutes from now.
             xmonths (int): Optional. If frequency is XMONTHLY, how frequent to perform harvest. Defaults to 1.
-            incremental (bool): Optional. Defaults to false.
+            incremental (bool): Optional. Defaults to False.
 
         Returns:
             int: the HTTP status code as the request.
