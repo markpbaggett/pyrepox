@@ -3,6 +3,7 @@ import requests
 import xmltodict
 import arrow
 from collections import deque
+import operator
 
 
 class Repox:
@@ -1453,3 +1454,34 @@ class Repox:
             headers="application/xml",
             data=metadata,
         ).status_code
+
+    def get_recently_ingested_sets_by_provider(self, provider_id: str, since: str = 'YYYY-MM-DD') -> list:
+        """ Get an ordered list of recently updated sets as a list of tuples.
+
+        Todo:
+            * (markpbaggett) Figure out what this should be and how this should work.
+
+        Args:
+            provider_id (str): Required. The id of the aggregator you want
+            since (str): Optional.  Date of last ingest
+
+        Returns:
+            list: A list of tuples with dataset_id and date of last ingest.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_recently_ingested_sets_by_provider('utcr0',
+            ... '2019-03-14')
+            [('utc_p16877coll30', '03/18/2019 10:25:49'), ('utc_p16877coll29', '03/18/2019 10:25:19')]
+
+        """
+        datasets = self.get_list_of_sets_from_provider(provider_id)
+        datasets_by_date = []
+        for dataset in datasets:
+            if since != 'YYYY-MM-DD':
+                since = arrow.get(since, 'YYYY-MM-DD').format('YYYY-MM-DD')
+                if arrow.get(self.get_last_ingest_date_of_set(dataset), 'MM/DD/YYYY').format('YYYY-MM-DD') > since:
+                    datasets_by_date.append((dataset, self.get_last_ingest_date_of_set(dataset)))
+            else:
+                datasets_by_date.append((dataset, self.get_last_ingest_date_of_set(dataset)))
+        datasets_by_date.sort(key=operator.itemgetter(1), reverse=True)
+        return datasets_by_date
