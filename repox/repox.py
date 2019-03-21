@@ -1455,11 +1455,10 @@ class Repox:
             data=metadata,
         ).status_code
 
-    def get_recently_ingested_sets_by_provider(self, provider_id: str, since: str = 'YYYY-MM-DD') -> list:
+    def get_recently_ingested_sets_by_provider(
+        self, provider_id: str, since: str = "YYYY-MM-DD"
+    ) -> list:
         """ Get an ordered list of recently updated sets as a list of tuples.
-
-        Todo:
-            * (markpbaggett) Figure out what this should be and how this should work.
 
         Args:
             provider_id (str): Required. The id of the aggregator you want
@@ -1469,6 +1468,22 @@ class Repox:
             list: A list of tuples with dataset_id and date of last ingest.
 
         Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_recently_ingested_sets_by_provider('utcr0')
+            [('utc_p16877coll30', '03/18/2019 10:25:49'), ('utc_p16877coll29', '03/18/2019 10:25:19'), ('p16877coll9',
+            '03/13/2019 12:08:51'), ('utc_p16877coll28', '03/13/2019 11:49:51'), ('utc_p16877coll27',
+            '03/13/2019 11:47:51'), ('utc_p16877coll26', '03/13/2019 11:46:06'), ('utc_p16877coll25',
+            '03/13/2019 11:45:06'), ('utc_p16877coll24', '03/13/2019 11:38:06'), ('utc_p16877coll23',
+            '03/13/2019 11:36:21'), ('utc_p16877coll15', '03/13/2019 11:30:21'), ('utc_p16877coll22',
+            '03/13/2019 11:20:06'), ('utc_p16877coll21', '03/13/2019 11:17:36'), ('utc_p16877coll20',
+            '03/13/2019 11:16:06'), ('utc_p16877coll19', '03/13/2019 11:13:06'), ('utc_p16877coll18',
+            '03/13/2019 11:10:21'), ('utc_p16877coll17', '03/13/2019 11:09:21'), ('utc_p16877coll16',
+            '03/13/2019 11:05:36'), ('utc_p16877coll14', '03/13/2019 10:59:21'), ('utc_p16877coll13',
+            '03/13/2019 10:57:51'), ('utc_p16877coll12', '03/13/2019 10:56:51'), ('utc_p16877coll11',
+            '03/13/2019 10:54:51'), ('utc_p16877coll10', '03/13/2019 10:53:21'), ('p16877coll8',
+            '03/13/2019 10:51:06'), ('p16877coll7', '03/13/2019 10:49:51'), ('p16877coll6', '03/13/2019 10:44:51'),
+            ('p16877coll5', '03/13/2019 10:43:36'), ('p16877coll4', '03/13/2019 10:31:06'), ('p16877coll3',
+            '03/13/2019 10:28:36'), ('p16877coll2', '03/13/2019 10:25:36'), ('p16877coll1', '03/13/2019 10:20:51'),
+            ('utc_p16877coll31', '03/07/2019 08:19:45')]
             >>> Repox("http://localhost:8080", "username", "password").get_recently_ingested_sets_by_provider('utcr0',
             ... '2019-03-14')
             [('utc_p16877coll30', '03/18/2019 10:25:49'), ('utc_p16877coll29', '03/18/2019 10:25:19')]
@@ -1477,11 +1492,20 @@ class Repox:
         datasets = self.get_list_of_sets_from_provider(provider_id)
         datasets_by_date = []
         for dataset in datasets:
-            if since != 'YYYY-MM-DD':
-                since = arrow.get(since, 'YYYY-MM-DD').format('YYYY-MM-DD')
-                if arrow.get(self.get_last_ingest_date_of_set(dataset), 'MM/DD/YYYY').format('YYYY-MM-DD') > since:
-                    datasets_by_date.append((dataset, self.get_last_ingest_date_of_set(dataset)))
+            if since != "YYYY-MM-DD":
+                since = arrow.get(since, "YYYY-MM-DD").format("YYYY-MM-DD")
+                if (
+                    arrow.get(
+                        self.get_last_ingest_date_of_set(dataset), "MM/DD/YYYY"
+                    ).format("YYYY-MM-DD")
+                    > since
+                ):
+                    datasets_by_date.append(
+                        (dataset, self.get_last_ingest_date_of_set(dataset))
+                    )
             else:
-                datasets_by_date.append((dataset, self.get_last_ingest_date_of_set(dataset)))
+                datasets_by_date.append(
+                    (dataset, self.get_last_ingest_date_of_set(dataset))
+                )
         datasets_by_date.sort(key=operator.itemgetter(1), reverse=True)
         return datasets_by_date
