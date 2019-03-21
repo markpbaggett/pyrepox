@@ -1494,15 +1494,22 @@ class Repox:
         for dataset in datasets:
             if since != "YYYY-MM-DD":
                 since = arrow.get(since, "YYYY-MM-DD").format("YYYY-MM-DD")
-                if (
-                    arrow.get(
-                        self.get_last_ingest_date_of_set(dataset), "MM/DD/YYYY"
-                    ).format("YYYY-MM-DD")
-                    > since
-                ):
-                    datasets_by_date.append(
-                        (dataset, self.get_last_ingest_date_of_set(dataset))
-                    )
+                try:
+                    if (
+                        arrow.get(
+                            self.get_last_ingest_date_of_set(dataset),
+                            "MM/DD/YYYY",
+                        ).format("YYYY-MM-DD")
+                        > since
+                    ):
+                        datasets_by_date.append(
+                            (
+                                dataset,
+                                self.get_last_ingest_date_of_set(dataset),
+                            )
+                        )
+                except arrow.parser.ParserError:
+                    pass
             else:
                 datasets_by_date.append(
                     (dataset, self.get_last_ingest_date_of_set(dataset))
