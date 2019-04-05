@@ -24,6 +24,9 @@ class Repox:
             username (str): The username used to connect to the Swagger API.
             password (str): The password used to connect to the Swagger API.
 
+        Todo:
+            * (markpbaggett) Decide whether swagger_endpoint should include /repox or not.
+
         """
         self.swagger_endpoint = f"{repox_url}/repox/rest"
         self.username = username
@@ -659,6 +662,10 @@ class Repox:
         Returns:
             str: The total number of records in a dataset as a str.
 
+        Todo:
+            * (markpbaggett) Should this return a string or a number.  Keep in mind that this is called by
+              count_records_from_provider.
+
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").count_records_in_dataset("cmhf_musicaudio")
             "7927"
@@ -684,6 +691,7 @@ class Repox:
         Todo:
             * (markpbaggett) Determine which keys are required and which are not and write something to help with
               unpacking this.
+            * (markpbaggett) This is all about OAI.  What about other things?  File sets?
 
         Examples:
             >>> details = {
@@ -855,6 +863,10 @@ class Repox:
         Args:
             metadata_format (str): The metadata format to match on.
 
+        Todo:
+            * (markpbaggett): Some of this interacts with flat files.  Minimally, I should make it possible to update
+              this list of formats and add some error handling for when the specified format is missing.
+
         Returns:
             dict: A dict with schema and namespace if found. If not, returned dict has empty schema and namespace.
 
@@ -947,6 +959,9 @@ class Repox:
 
         Returns:
             list: A list of scheduled harvests as dicts.
+
+        Todo:
+            (markpbaggett): Implement a method to get a list of all scheduled harvests from a particular provider.
 
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").get_scheduled_harvests("nr")
