@@ -974,6 +974,31 @@ class Repox:
             auth=(self.username, self.password),
         ).json()
 
+    def get_list_of_scheduled_harvests_by_provider(
+        self, provider_id: str
+    ) -> list:
+        """Get a list of scheduled harvests by provider.
+
+        Requires a provider_id.  Iterates through all datasets and appends its list of schedued harvests if not empty.
+
+        Args:
+            provider_id (str): The provider_id of the provider you are querying.
+
+        Returns:
+            list: A list of lists of scheduled harvests for each set is harvests are scheduled for any sets.
+
+        Examples:
+            >>> Repox("http://localhost:8080", "username", "password").get_list_of_scheduled_harvests_by_provider(
+            ... 'utcr0')
+            []
+
+        """
+        return [
+            self.get_scheduled_harvests(dataset)
+            for dataset in self.get_list_of_sets_from_provider(provider_id)
+            if len(self.get_scheduled_harvests(dataset)) is not 0
+        ]
+
     def get_status_of_harvest(self, dataset_id: str) -> dict:
         """Get status of most recent harvest of a dataset.
 
