@@ -594,7 +594,7 @@ class Repox:
         records = 0
         sets = self.get_list_of_sets_from_provider(provider_id)
         for dataset in sets:
-            records += int(self.count_records_in_dataset(dataset))
+            records += self.count_records_in_dataset(dataset)
         return records
 
     def get_dataset_details(self, data_set_id: str) -> dict:
@@ -652,7 +652,7 @@ class Repox:
             auth=(self.username, self.password),
         ).json()["result"]
 
-    def count_records_in_dataset(self, data_set_id: str) -> str:
+    def count_records_in_dataset(self, data_set_id: str) -> int:
         """Get the total number of records in a dataset.
 
         Returns the total number of records from a dataset as a string.
@@ -663,19 +663,17 @@ class Repox:
         Returns:
             str: The total number of records in a dataset as a str.
 
-        Todo:
-            * (markpbaggett) Should this return a string or a number.  Keep in mind that this is called by
-              count_records_from_provider.
-
         Examples:
             >>> Repox("http://localhost:8080", "username", "password").count_records_in_dataset("cmhf_musicaudio")
-            "7927"
+            7927
 
         """
-        return requests.get(
-            f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
-            auth=(self.username, self.password),
-        ).json()["result"]
+        return int(
+            requests.get(
+                f"{self.swagger_endpoint}/datasets/{data_set_id}/count",
+                auth=(self.username, self.password),
+            ).json()["result"]
+        )
 
     def create_dataset(self, provider_id: str, metadata: dict) -> int:
         """Create a dataset.
