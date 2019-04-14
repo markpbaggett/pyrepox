@@ -38,3 +38,8 @@ Contributing Code
    $ git push origin master
 
 * Open pull request.
+
+Tests
+-----
+
+Unit tests are appreciated.  Instead of relying on a Repox instance, use mocks instead.
