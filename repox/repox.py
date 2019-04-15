@@ -367,8 +367,6 @@ class Repox:
 
         Todo:
             * (markpbaggett) Determine if there is a list of allowed country codes.
-            * (markpbaggett) Modify code around known provider types: ARCHIVE, MUSEUM, LIBRARY, AUDIO_VISUAL_ARCHIVE,
-              RESEARCH_EDUCATIONAL, CROSS_SECTOR, PUBLISHER, PRIVATE, AGGREGATOR, UNKNOWN
 
         Examples:
             >>> Repox('http://localhost:8080', 'username', 'password').update_provider("UTKr0",
