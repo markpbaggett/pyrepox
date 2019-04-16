@@ -29,4 +29,14 @@ $ pip install repox
 
 ## Documentation
 
-Documentation available at [https://pyrepox.readthedocs.io/en/latest/](https://pyrepox.readthedocs.io/en/latest/).
+Documentation is available at [https://pyrepox.readthedocs.io/en/latest/](https://pyrepox.readthedocs.io/en/latest/).
+
+Examples for each currently defined method is documented in the 
+[repox package documentation](https://pyrepox.readthedocs.io/en/latest/source/repox.html).
+
+[Todos](https://pyrepox.readthedocs.io/en/latest/todo.html) are also documented.
+
+## Want to Help?
+
+Help is very much appreciated.  See [Contributing](https://github.com/markpbaggett/pyrepox/blob/master/CONTRIBUTING.rst)
+or open an issue in the [issue tracker](https://github.com/markpbaggett/pyrepox/issues). 
