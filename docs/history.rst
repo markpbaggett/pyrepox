@@ -1,6 +1,23 @@
 Release History / Change Log
 ============================
 
+0.0.3 (April 16, 2019)
+----------------------
+
+**Improvements**
+
+* Added schedule_harvest() method.
+* Added schedule_weekly_harvest() method.
+* Added get_recently_ingested_sets_by_aggregator() method.
+* Added get_list_of_scheduled_harvests_by_provider() method.
+
+**Trivial and Dev Things**
+
+* Switch to letting Sphinx automatically handle todos.
+* Properly format XML output in docstrings.
+* Switch type of return for count_records_in_set() to int.
+
+
 0.0.2 (January 1, 2019)
 -----------------------
 
