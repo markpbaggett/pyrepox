@@ -1485,7 +1485,8 @@ class Repox:
         """ Add a mapping.
 
         Todo:
-            * (markpbaggett) This still needs to be implemented.
+            * (markpbaggett) This still needs to be implemented.  See note from Simon:
+              https://github.com/europeana/REPOX/issues/40
 
         {
         'id': 'UTKMODSrepaired',
