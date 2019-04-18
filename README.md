@@ -3,6 +3,7 @@
 ![Travis icon](https://travis-ci.org/markpbaggett/pyrepox.png)
 ![readthedocs icon](https://readthedocs.org/projects/pyrepox/badge/?version=latest)
 [![PyPI version](https://badge.fury.io/py/repox.svg)](https://badge.fury.io/py/repox)
+![SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/repox.svg)
 
 Pyrepox is a lightweight [Repox](https://github.com/europeana/REPOX)
 client written in Python. It is designed to make reading, writing,
